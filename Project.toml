@@ -2,3 +2,17 @@ name = "FisherGeometrics"
 uuid = "cd2f9e34-a51a-4a5d-bc8e-63e8126e578d"
 version = "0.1.0"
 authors = ["Jan Bouwman "]
+
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d3"
+ 
+[compat]
+julia = "1.9"
+ 
+[extras]
+Test = "8dfed614-e22c-358a-adac-d3e64b9c0b4c"
+ 
+[targets]
+test = ["Test"]
+ 
