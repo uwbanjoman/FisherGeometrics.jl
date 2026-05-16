@@ -3,6 +3,9 @@ uuid = "cd2f9e34-a51a-4a5d-bc8e-63e8126e578d"
 version = "0.1.0"
 authors = ["Jan Bouwman "]
 
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
 [compat]
 julia = "1.9"
  
