@@ -1,2 +1,2 @@
-module FisherGeoMetrics
-end # module FisherGeoMetrics
+module FisherGeometrics
+end # module FisherGeometrics
