@@ -5,14 +5,6 @@ Unified field theory from the Fisher information geometry of the SM vacuum.
 
     THE SINGLE POSTULATE:  g_AB = 𝓕_AB / ρ₀
 
-Structure (each layer depends on those above):
-  Foundation  —  g_AB=𝓕_AB/ρ₀ · τ=1/5 · φ · κ_hol
-  Geometry    —  K=ℂP²×S³×S¹ · spectrum(Ð²_K) · 𝒯(K)=1
-  Symmetry    —  SU(3)×SU(2)×U(1) · 3 gen. · sin²θ_W
-  Dynamics    —  α_em · CKM · δ=arctan(φ²) · 1:τ²:τ⁴
-  Gravity     —  G_μν=8πG_N ℛ_μν[𝓕] · S_BH=A/4G_N · Ω_Λ
-  Evolution   —  iħ dρ̂/dt=[Ð²_K,ρ̂] · Bures distance
-
 © 2026 Jan Bouwman
 """
 module FisherGeometrics
@@ -20,16 +12,15 @@ module FisherGeometrics
 using LinearAlgebra
 using Printf
 
-include("Foundation.jl")
-include("Geometry.jl")
-include("Symmetry.jl")
-include("Dynamics.jl")
-include("Gravity.jl")
-include("Evolution.jl")
+include(joinpath(@__DIR__, "Foundation.jl"))
+include(joinpath(@__DIR__, "Geometry.jl"))
+include(joinpath(@__DIR__, "Symmetry.jl"))
+include(joinpath(@__DIR__, "Dynamics.jl"))
+include(joinpath(@__DIR__, "Gravity.jl"))
+include(joinpath(@__DIR__, "Evolution.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
 
-# Top-level
 export scoreboard, check_all, info, unified_equation
 export check_geometry, check_symmetry, check_dynamics, check_gravity, check_evolution
 
@@ -60,6 +51,7 @@ export jarlskog, cp_phase_identity
 export information_resistance
 export cosmological_constant, Λ_fundamental
 export bh_entropy, bh_temperature, newton_constant_scaling
+export vacuum_action
 export Ω_Λ, n_s, Ω_DM
 
 # Evolution
@@ -71,11 +63,6 @@ export decoherence_time, measurement_projection
 
 # ── Full scoreboard ───────────────────────────────────────────
 
-"""
-    scoreboard()
-
-Complete comparison of all predictions vs PDG 2024.
-"""
 function scoreboard()
     V = ckm_matrix(); J = jarlskog()
     println()
@@ -106,13 +93,6 @@ function scoreboard()
     println("╚══════════════════════════════════════════════════════════════╝")
 end
 
-# ── Consistency checks ────────────────────────────────────────
-
-"""
-    check_all() → Bool
-
-Run all consistency checks across all layers.
-"""
 function check_all()
     println("Running FisherGeometrics consistency checks...")
     results = [
@@ -132,16 +112,9 @@ function check_all()
     return all_ok
 end
 
-# ── Info ──────────────────────────────────────────────────────
-
-"""
-    info()
-
-Print framework overview.
-"""
 function info()
     println("\n  FisherGeometrics.jl  —  g_AB = 𝓕_AB/ρ₀")
-    println("  τ=$(τ)  φ=$(round(φ,digits=4))  κ_hol=$(κ_hol)")
+    @printf("  τ=%s  φ=%.4f  κ_hol=%s\n", τ, φ, κ_hol)
     println("  Run scoreboard() · check_all() · unified_equation()")
     println("  Zero free parameters.\n")
 end
