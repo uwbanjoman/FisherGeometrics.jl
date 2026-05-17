@@ -16,6 +16,7 @@
 
 using FisherGeometrics
 using LinearAlgebra
+using Statistics
 using Printf
 
 # ── Hamiltonian ───────────────────────────────────────────────────────────────
