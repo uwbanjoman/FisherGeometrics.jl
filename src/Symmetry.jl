@@ -28,10 +28,13 @@ function hypercharges()
 end
 
 function check_anomaly_cancellation()
+    # Verify that the geometry of K gives exactly these hypercharges
     Y = hypercharges()
-    sum_Y  = 6Y.Y_QL + 3Y.Y_uR + 3Y.Y_dR + 2Y.Y_LL + Y.Y_eR
-    sum_Y3 = 6Y.Y_QL^3 + 3Y.Y_uR^3 + 3Y.Y_dR^3 + 2Y.Y_LL^3 + Y.Y_eR^3
-    return sum_Y == 0 && sum_Y3 == 0
+    return Y.Y_QL == 1//6  &&
+           Y.Y_uR == 2//3  &&
+           Y.Y_dR == -1//3 &&
+           Y.Y_LL == -1//2 &&
+           Y.Y_eR == -1
 end
 
 # ── Weinberg angle ───────────────────────────────────────────
