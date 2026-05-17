@@ -1,44 +1,11 @@
-"""
-Symmetry.jl
-===========
-The gauge structure of the Standard Model from the geometry of K.
+# Symmetry.jl
+# ===========
+# Gauge structure from the geometry of K.
+# Depends on: Foundation.jl, Geometry.jl
 
-The isometry group of K = ℂP² × S³ × S¹ is:
-    Isom(K) = SU(3) × SU(2) × U(1)_R × U(1)_Betti
-
-The Englert flux mixes U(1)_R and U(1)_Betti into the
-hypercharge U(1)_Y, leaving exactly the SM gauge group:
-    SU(3)_C × SU(2)_L × U(1)_Y
-
-This is not a postulate. It follows from:
-  1. K = ℂP² × S³ × S¹ (Foundation + Geometry)
-  2. The Freund-Rubin vacuum on AdS₄ × M^{1,1,1}
-  3. The Englert flux breaking N=2 → N=0
-
-This module defines:
-  - The SM gauge group structure
-  - Three generations (topological, from c₁(ℂP²) = 3)
-  - Hypercharge assignments (exact, from anomaly cancellation)
-  - The Weinberg angle (geometric mixing angle)
-  - The GUT scale and unification
-
-Dependencies: Foundation, Geometry
-"""
-module Symmetry
-
-using LinearAlgebra
 using Printf
-using ..Foundation: τ, κ_hol, φ, M_Pl_GeV, M_c_GeV
-using ..Geometry: vol_CP2, vol_S3, vol_K
 
-export n_generations, hypercharges
-export sin2_weinberg, weinberg_angle
-export alpha_GUT_inv, alpha_strong
-export check_symmetry, gauge_group_summary
-
-# ─────────────────────────────────────────────────────────────
-# THREE GENERATIONS
-# ─────────────────────────────────────────────────────────────
+# ── Three generations ────────────────────────────────────────
 
 """n_generations = 3 from c₁(ℂP²) = 3 (Atiyah-Singer, topologically protected)."""
 const n_generations = 3
@@ -48,9 +15,7 @@ const χ_CP2  = 3
 
 @assert c1_CP2 == c2_CP2 == χ_CP2 == n_generations
 
-# ─────────────────────────────────────────────────────────────
-# HYPERCHARGE ASSIGNMENTS
-# ─────────────────────────────────────────────────────────────
+# ── Hypercharges ─────────────────────────────────────────────
 
 """
     hypercharges() → NamedTuple
@@ -69,18 +34,14 @@ function check_anomaly_cancellation()
     return sum_Y == 0 && sum_Y3 == 0
 end
 
-# ─────────────────────────────────────────────────────────────
-# WEINBERG ANGLE
-# ─────────────────────────────────────────────────────────────
+# ── Weinberg angle ───────────────────────────────────────────
 
 """sin²θ_W = 0.232 from geometric U(1) mixing (Document XXVII). Obs: 0.2312, 0.3%."""
 const sin2_weinberg = 0.232
 
 weinberg_angle() = asin(√sin2_weinberg)
 
-# ─────────────────────────────────────────────────────────────
-# STRONG COUPLING AND GUT SCALE
-# ─────────────────────────────────────────────────────────────
+# ── Strong coupling and GUT ──────────────────────────────────
 
 """α_s(M_Z) = 0.118 from RG running from M_c."""
 const alpha_strong = 0.118
@@ -100,9 +61,7 @@ function alpha_GUT_inv()
     return Float64(c2_CP2)^2 * vol_CP2_unit / (4π * vol_K_unit) * (M_Pl_GeV/M_c_GeV)^2
 end
 
-# ─────────────────────────────────────────────────────────────
-# CONSISTENCY CHECKS
-# ─────────────────────────────────────────────────────────────
+# ── Consistency check ────────────────────────────────────────
 
 function check_symmetry()
     ok = true
@@ -125,5 +84,3 @@ function gauge_group_summary()
             alpha_GUT_inv(), abs(alpha_GUT_inv()-41.5)/41.5*100)
     println("Y(Q_L,u_R,d_R) = $(Y.Y_QL), $(Y.Y_uR), $(Y.Y_dR)  [exact]")
 end
-
-end # module Symmetry
