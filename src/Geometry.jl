@@ -1,49 +1,16 @@
-"""
-Geometry.jl
-===========
-Spectral geometry of the internal space K = ℂP² × S³ × S¹.
+# Geometry.jl
+# ===========
+# Spectral geometry of K = ℂP² × S³ × S¹.
+# Depends on: Foundation.jl (τ, κ_hol)
 
-K is not a choice. It is the unique information geometry of the
-Standard Model vacuum, understood as the minimal composite quantum
-system with colour, weak isospin, and hypercharge:
+# ── Volumes ──────────────────────────────────────────────────
 
-    ℂ³ ⊗ ℂ² ⊗ U(1)   →   K = ℂP² × S³ × S¹
-    qutrit ⊗ qubit ⊗ phase
-
-This module defines:
-  - The scalar Laplacian spectrum of K
-  - The Dirac operator Ð_K and its square Ð²_K
-  - Kaluza-Klein masses M²_n = λ_n(Ð²_K)
-  - The spectral zeta function ζ_K(s)
-  - The Ray-Singer analytic torsion 𝒯(K) = 1 (exact)
-  - The information distance on state space
-
-Dependencies: Foundation
-"""
-module Geometry
-
-using LinearAlgebra
-using ..Foundation: τ, κ_hol, φ
-
-export spectrum_K, dirac_spectrum_K, kk_masses
-export zeta_K, zeta_K_prime
-export analytic_torsion
-export information_distance, bures_distance
-export vol_CP2, vol_S3, vol_S1, vol_K
-
-# ─────────────────────────────────────────────────────────────
-# VOLUMES OF THE FACTOR SPACES
-# ─────────────────────────────────────────────────────────────
-
-"""Unit sphere volumes with radii rℂP²=1, rS³=τ, rS¹=τ."""
 const vol_CP2 = π^2 / 2
 const vol_S3  = 2π^2 * Float64(τ)^3
 const vol_S1  = 2π   * Float64(τ)
 const vol_K   = vol_CP2 * vol_S3 * vol_S1
 
-# ─────────────────────────────────────────────────────────────
-# SCALAR LAPLACIAN SPECTRUM OF K
-# ─────────────────────────────────────────────────────────────
+# ── Scalar Laplacian spectrum ────────────────────────────────
 
 """
     spectrum_K(k_max, j_max, n_max) → (λs, gs)
@@ -75,10 +42,6 @@ function spectrum_K(k_max::Int=20, j_max::Int=20, n_max::Int=20)
     return λs, gs
 end
 
-# ─────────────────────────────────────────────────────────────
-# DIRAC OPERATOR Ð_K
-# ─────────────────────────────────────────────────────────────
-
 """
     dirac_spectrum_K(k_max, j_max, n_max) → (λs, gs)
 
@@ -109,9 +72,7 @@ function kk_masses(N::Int=10)
     return M2[1:min(N, length(M2))]
 end
 
-# ─────────────────────────────────────────────────────────────
-# SPECTRAL ZETA FUNCTION
-# ─────────────────────────────────────────────────────────────
+# ── Spectral zeta function ───────────────────────────────────
 
 """
     zeta_K(s; k_max, j_max, n_max) → Complex
@@ -135,9 +96,7 @@ function zeta_K_prime(; k_max::Int=25, j_max::Int=25, n_max::Int=25, ε::Float64
             real(zeta_K(-ε; k_max, j_max, n_max))) / (2ε)
 end
 
-# ─────────────────────────────────────────────────────────────
-# ANALYTIC TORSION
-# ─────────────────────────────────────────────────────────────
+# ── Analytic torsion ─────────────────────────────────────────
 
 """
     analytic_torsion() → Float64
@@ -155,9 +114,7 @@ function analytic_torsion()
     return 1.0   # exact theorem, not numerical
 end
 
-# ─────────────────────────────────────────────────────────────
-# INFORMATION DISTANCES
-# ─────────────────────────────────────────────────────────────
+# ── Bures distance ───────────────────────────────────────────
 
 """
     bures_distance(ρ₁, ρ₂) → Float64
@@ -171,23 +128,10 @@ function bures_distance(ρ₁::AbstractMatrix, ρ₂::AbstractMatrix)
     return acos(clamp(√F, 0.0, 1.0))
 end
 
-"""
-    information_distance(ρ₁, ρ₂) → Float64
-
-Alias for bures_distance — the natural metric on state space
-induced by the Fisher information tensor.
-"""
 const information_distance = bures_distance
 
-# ─────────────────────────────────────────────────────────────
-# CONSISTENCY CHECKS
-# ─────────────────────────────────────────────────────────────
+# ── Consistency check ────────────────────────────────────────
 
-"""
-    check_geometry() → Bool
-
-Verify key geometric identities. Returns true if all pass.
-"""
 function check_geometry()
     ok = true
     ζ0 = real(zeta_K(0.0+0im; k_max=20, j_max=20, n_max=20))
@@ -199,5 +143,3 @@ function check_geometry()
         (@warn "λ_min(Ð²_K) ≠ 9/4"; ok = false)
     return ok
 end
-
-end # module Geometry
