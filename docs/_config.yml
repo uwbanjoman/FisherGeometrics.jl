@@ -1,0 +1,31 @@
+title: FisherGeometrics.jl
+description: >
+  The Standard Model, spacetime, gravity, and consciousness
+  from a single postulate: g_AB = 𝓕_AB/ρ₀
+
+remote_theme: just-the-docs/just-the-docs
+
+url: https://uwbanjoman.github.io
+baseurl: /FisherGeometrics.jl
+
+aux_links:
+  GitHub:
+    - "https://github.com/uwbanjoman/FisherGeometrics.jl"
+
+aux_links_new_tab: true
+
+color_scheme: light
+
+heading_anchors: true
+
+footer_content: >
+  © 2026 Jan Bouwman — MIT License —
+  <a href="https://github.com/uwbanjoman/FisherGeometrics.jl">GitHub</a>
+
+# MathJax for LaTeX equations
+markdown: kramdown
+kramdown:
+  math_engine: mathjax
+
+plugins:
+  - jekyll-seo-tag
