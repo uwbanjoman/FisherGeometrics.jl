@@ -22,6 +22,7 @@ nav_order: 2
 
 ```julia
 using FisherGeometrics
+using QuantumFisher
 
 # The vacuum state ρ̂* = I/6
 ρ_vac = vacuum_state()
