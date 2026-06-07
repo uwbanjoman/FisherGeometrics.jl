@@ -9,6 +9,7 @@ Unified field theory from the Fisher information geometry of the SM vacuum.
 """
 module FisherGeometrics
 
+using QuantumFisher
 using LinearAlgebra
 using Printf
 
