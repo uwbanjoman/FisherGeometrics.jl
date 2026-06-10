@@ -22,13 +22,17 @@ const Ω_DM = 0.0
 # ── Information resistance tensor ────────────────────────────
 
 """
-    vacuum_action() → Float64 = e^{-1/2}
+    vacuum_action() → Float64
 
-Vacuum information action σ₀ = e^{-1/2} from self-consistency on K
-in the Englert regime (Document XXIII).
-Determines the emergent cosmological constant.
+σ₀ = exp(-𝓛[ρ̂]) where 𝓛[ρ̂] = (1/2) g_Bures[ρ̂, ρ̂]
+
+THEOREM: 𝓛[ρ̂] = 1/2 for ALL ρ̂ ∈ 𝒟ₙ with Tr(ρ̂) = 1.
+PROOF: lyapunov(ρ̂, ρ̂) = I in eigenbasis → Tr(ρ̂ I) = 1 → 𝓛 = 1/2.
+This is UNIVERSAL — independent of n, vacuum, or physical content.
+
+σ₀ = exp(-1/2) ✓
 """
-vacuum_action() = exp(-0.5)
+vacuum_action() = exp(-1//2)
 
 """
     information_resistance(F, σ, g) → Matrix{Float64}
