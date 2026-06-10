@@ -32,7 +32,7 @@ This is UNIVERSAL — independent of n, vacuum, or physical content.
 
 σ₀ = exp(-1/2) ✓
 """
-vacuum_action() = exp(-1//2)
+vacuum_action() = exp(-one(Float64)/2)
 
 """
     information_resistance(F, σ, g) → Matrix{Float64}
