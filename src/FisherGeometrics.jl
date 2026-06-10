@@ -18,6 +18,7 @@ include(joinpath(@__DIR__, "Geometry.jl"))
 include(joinpath(@__DIR__, "Symmetry.jl"))
 include(joinpath(@__DIR__, "Dynamics.jl"))
 include(joinpath(@__DIR__, "Gravity.jl"))
+include(joinpath(@__DIR__, "Lyapunov.jl"))
 include(joinpath(@__DIR__, "Evolution.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
@@ -56,6 +57,9 @@ export cosmological_constant, Λ_fundamental
 export bh_entropy, bh_temperature, newton_constant_scaling
 export vacuum_action
 export Ω_Λ, n_s, Ω_DM
+
+# Lyapunov
+export lyapunov
 
 # Evolution
 export hamiltonian_KK, von_neumann_rhs
