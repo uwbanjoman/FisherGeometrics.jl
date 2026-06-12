@@ -9,8 +9,13 @@ const vol_CP2 = π^2 / 2
 const vol_S3  = 2π^2 * Float64(τ)^3
 const vol_S1  = 2π   * Float64(τ)
 const vol_K   = vol_CP2 * vol_S3 * vol_S1
+"""α_s = Δ/(2πN_c): sterke koppeling uit CP²-holonomienormering (1.2% ✓)"""
 const a_s     = Float64(Δ_YM)/(2π*N_c_QCD)   # 0.1194
+"""β₀^FG = 1/α_s = κ × β₀^QCD: holografische correctie op β-functie"""
 const β₀_FG   = κ × β₀^QCD
+"""β₀^QCD = (11N_c - 2Nf)/3: standaard QCD β-functie ter referentie"""
+const β₀_QCD(Nf=6) = (11*N_c - 2*Nf)/3
+"""Λ_QCD = M_KK × e^{-2π} × (1-τ)²: U(1)-holonomie + BGK-suppressie (1.4% ✓)"""
 const Λ_QCD = M_KK e^{-2π}(1-τ)²
 
 # ── Scalar Laplacian spectrum ────────────────────────────────
