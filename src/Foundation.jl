@@ -46,6 +46,14 @@ const M_Pl_GeV = 1.22e19
 """M_c_GeV = 1.44×10¹⁷ GeV — KK compactification scale."""
 const M_c_GeV = 1.44e17
 
+"""
+    M_KK_GeV = 178.1 GeV
+De Kaluza-Klein compactificatieschaal — gelijk aan de 10D Planck-massa
+(Document XCIV): 
+    M_KK = M_P^{(10D)} = M_P^{(4D)} / (√(8π) Vol(K)^{1/8})^{1/2} = 178.1 GeV
+"""
+const M_KK_GeV = 178.1
+
 # ── Fisher information tensor ────────────────────────────────
 
 """
