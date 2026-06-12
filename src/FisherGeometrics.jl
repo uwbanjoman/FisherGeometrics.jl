@@ -28,7 +28,7 @@ export scoreboard, check_all, info, unified_equation
 export check_geometry, check_symmetry, check_dynamics, check_gravity, check_evolution
 
 # Foundation
-export τ, κ_hol, φ, λ_W, A_Wolf, δ_CP, M_Pl_GeV, M_c_GeV
+export τ, κ_hol, φ, λ_W, A_Wolf, δ_CP, M_Pl_GeV, M_c_GeV, M_KK_GeV
 export quantum_fisher, fisher_tensor, fubini_study_metric
 export gellmann_basis, vacuum_state, pure_state
 
