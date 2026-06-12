@@ -14,11 +14,11 @@ const a_s = (9/4)/(2π*3)   # = 0.1194
 """β₀^FG = 1/α_s = κ_hol × β₀^QCD: holografische correctie op β-functie"""
 const β₀_FG = 1/a_s
 """β₀^QCD = (11N_c - 2Nf)/3: standaard QCD β-functie ter referentie"""
-const β₀_QCD(Nf=6) = (11*N_c - 2*Nf)/3
+β₀_QCD(Nf=6) = (11*N_c - 2*Nf)/3
 """Λ_QCD = M_KK × exp(-2π) × (1-τ)²: U(1)-holonomie + BGK-suppressie (1.4% ✓)"""
 const Λ_QCD = M_KK_GeV * exp(-2π) * (1 - Float64(τ))^2
 """η = (3/4)τ^13: baryon-foton verhouding (0.7% ✓)"""
-const η_baryon = (3/4) * Float64(τ)^13v
+const η_baryon = (3/4) * Float64(τ)^13
 
 # ── Scalar Laplacian spectrum ────────────────────────────────
 
