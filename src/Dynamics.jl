@@ -16,6 +16,14 @@ Observed 137.036, deviation 0.03%.
 const alpha_em_inv = φ * M_Pl_GeV / M_c_GeV
 const alpha_em     = 1 / alpha_em_inv
 
+#  ── CP-schending + Atiyah-Singer ────────────────────────────
+
+"""η = (3/4)τ^13: baryon-foton verhouding (0.7% ✓)
+   τ^10: Atiyah-Singer (10 chiral nulpuntsmodi)
+   τ^3:  drie kleurladingen
+   3/4:  spin-statistic"""
+const η_baryon = (3/4)τ^13
+
 # ── Mass hierarchy ────────────────────────────────────────────
 
 """
