@@ -41,7 +41,7 @@ export vol_CP2, vol_S3, vol_S1, vol_K
 # Symmetry
 export n_generations, hypercharges
 export sin2_weinberg, weinberg_angle
-export alpha_GUT_inv, alpha_strong
+export alpha_GUT_inv
 export check_anomaly_cancellation
 
 # Dynamics
