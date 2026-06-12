@@ -9,6 +9,7 @@ const vol_CP2 = π^2 / 2
 const vol_S3  = 2π^2 * Float64(τ)^3
 const vol_S1  = 2π   * Float64(τ)
 const vol_K   = vol_CP2 * vol_S3 * vol_S1
+const alpha_strong = Float64(Δ_YM)/(2π*N_c_QCD)   # 0.1194
 
 # ── Scalar Laplacian spectrum ────────────────────────────────
 
