@@ -36,7 +36,7 @@ export gellmann_basis, vacuum_state, pure_state
 export spectrum_K, dirac_spectrum_K, kk_masses
 export zeta_K, zeta_K_prime, analytic_torsion
 export bures_distance, information_distance
-export vol_CP2, vol_S3, vol_S1, vol_K
+export vol_CP2, vol_S3, vol_S1, vol_K, β₀_FG
 
 # Symmetry
 export n_generations, hypercharges
