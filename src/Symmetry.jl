@@ -44,10 +44,7 @@ const sin2_weinberg = 0.232
 
 weinberg_angle() = asin(√sin2_weinberg)
 
-# ── Strong coupling and GUT ──────────────────────────────────
-
-"""α_s(M_Z) = 0.118 from RG running from M_c."""
-const alpha_strong = 0.118
+# ── GUT ──────────────────────────────────────────────────────
 
 """
     alpha_GUT_inv() → Float64 ≈ 41.0
