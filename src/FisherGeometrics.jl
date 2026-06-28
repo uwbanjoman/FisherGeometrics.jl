@@ -68,6 +68,7 @@ export decoherence_time, measurement_projection
 # LieAlgebra
 export commutator, anticommutator, inner
 export structure_constants, jacobi_test
+export reconstruction_error
 
 # ── Full scoreboard ───────────────────────────────────────────
 
