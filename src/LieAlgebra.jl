@@ -1,3 +1,5 @@
+# LieAlgebra.jl
+
 function commutator(A:Matrix{ComplexF64},B:Matrix{ComplexF64})
   A*B - B*A
 end
