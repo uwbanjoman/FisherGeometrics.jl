@@ -53,3 +53,19 @@ function jacobi_test(f::Array{Float64,3}; atol=1e-12)
     return max_error < atol
 
 end
+
+function reconstruction_error(G, f)
+    n = length(G)
+    maxerr = 0.0
+    for a in 1:n
+        for b in 1:n
+            lhs = commutator(G[a], G[b])
+            rhs = zeros(ComplexF64, size(lhs))
+            for c in 1:n
+                rhs += im * f[a,b,c] * G[c]
+            end
+            maxerr = max(maxerr, norm(lhs - rhs))
+        end
+    end
+    return maxerr
+end
