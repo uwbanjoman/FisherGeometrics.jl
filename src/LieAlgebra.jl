@@ -77,3 +77,21 @@ end
 function expand_in_basis(X, G)
     return [real(tr(X*Gi)) for Gi in G]
 end
+
+function centralizer_matrix(H, embedded, G)
+    rows = Matrix{Float64}(undef,0,length(H))
+    for T in embedded
+        for Ga in G
+            row = zeros(length(H))
+            for i in eachindex(H)
+                C = H[i]*T - T*H[i]
+                row[i] = real(tr(Ga' * C))
+            end
+
+            if norm(row) > 1e-12
+                rows = vcat(rows, row')
+            end
+        end
+    end
+    rows
+end
