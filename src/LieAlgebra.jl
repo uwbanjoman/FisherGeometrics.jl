@@ -104,3 +104,11 @@ function cartan_matrix(G::Vector{Matrix{ComplexF64}})
     end
     return D
 end
+
+function expansion_matrix(embedded,G)
+    M=zeros(Float64,length(embedded),length(G))
+    for a in eachindex(embedded)
+        M[a,:]=expand_in_basis(embedded[a],G)
+    end
+    return M
+end
