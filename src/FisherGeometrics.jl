@@ -69,6 +69,7 @@ export decoherence_time, measurement_projection
 export commutator, anticommutator, inner
 export structure_constants, jacobi_test
 export reconstruction_error, expand_in_basis
+export centralizer_matrix
 
 # ── Full scoreboard ───────────────────────────────────────────
 
