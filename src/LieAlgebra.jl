@@ -21,7 +21,8 @@ function structure_constants(G::Vector{Matrix{ComplexF64}})
             C = G[a]*G[b] - G[b]*G[a]
             for c in 1:n
                 # projecteer op generator c
-                f[a,b,c] = -imag(tr(C * G[c])) / sqrt(2)
+                #f[a,b,c] = -imag(tr(C * G[c])) / sqrt(2)
+                f[a,b,c] = imag(tr(C * G[c]))  # + teken, geen 1/√2
                 #f[a,b,c] = -imag(tr(C * G[c]))
             end
         end
@@ -63,7 +64,8 @@ function reconstruction_error(G, f)
             lhs = commutator(G[a], G[b])
             rhs = zeros(ComplexF64, size(lhs))
             for c in 1:n
-                rhs += im * sqrt(2) * f[a,b,c] * G[c]
+                #rhs += im * sqrt(2) * f[a,b,c] * G[c]
+                rhs += im * f[a,b,c] * G[c]
                 #rhs += im * f[a,b,c] * G[c]
             end
             maxerr = max(maxerr, norm(lhs - rhs))
