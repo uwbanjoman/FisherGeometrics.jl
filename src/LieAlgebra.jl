@@ -1,14 +1,14 @@
 # LieAlgebra.jl
 
-function commutator(A:Matrix{ComplexF64},B:Matrix{ComplexF64})
+function commutator(A::Matrix{ComplexF64},B::Matrix{ComplexF64})
   A*B - B*A
 end
 
-function anticommutator(A:Matrix{ComplexF64},B:Matrix{ComplexF64})
+function anticommutator(A::Matrix{ComplexF64},B::Matrix{ComplexF64})
   A*B + B*A
 end
 
-function inner(A:Matrix{ComplexF64},B:Matrix{ComplexF64})
+function inner(A::Matrix{ComplexF64},B::Matrix{ComplexF64})
   real(tr(A*B))
 end
 
