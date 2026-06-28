@@ -130,6 +130,28 @@ function gellmann_basis(n::Int)
 end
 
 """
+    pauli_basis() → Vector{Matrix{ComplexF64}}
+"""
+function pauli_basis()
+    σ1 = ComplexF64[
+        0 1
+        1 0
+    ] / sqrt(2)
+
+    σ2 = ComplexF64[
+        0 -im
+        im 0
+    ] / sqrt(2)
+
+    σ3 = ComplexF64[
+        1 0
+        0 -1
+    ] / sqrt(2)
+
+    return [σ1, σ2, σ3]
+end
+
+"""
     vacuum_state() → Matrix{ComplexF64}
 
 Vacuum density matrix ρ̂₀ = I/6 on ℂ⁶ = ℂ³⊗ℂ².
