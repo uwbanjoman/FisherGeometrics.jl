@@ -21,7 +21,8 @@ function structure_constants(G::Vector{Matrix{ComplexF64}})
             C = G[a]*G[b] - G[b]*G[a]
             for c in 1:n
                 # projecteer op generator c
-                f[a,b,c] = -imag(tr(C * G[c]))
+                f[a,b,c] = -imag(tr(C * G[c])) / sqrt(2)
+                #f[a,b,c] = -imag(tr(C * G[c]))
             end
         end
     end
