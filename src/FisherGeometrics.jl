@@ -19,6 +19,7 @@ include(joinpath(@__DIR__, "Symmetry.jl"))
 include(joinpath(@__DIR__, "Dynamics.jl"))
 include(joinpath(@__DIR__, "Gravity.jl"))
 include(joinpath(@__DIR__, "Evolution.jl"))
+include(joinpath(@__DIR__, "LieAlgebra.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
 
@@ -63,6 +64,10 @@ export evolve_exact, evolve_rk4
 export purity, entropy
 export information_distance_trajectory
 export decoherence_time, measurement_projection
+
+# LieAlgebra
+export commutator, anticommutator, inner
+export structure_constants, jacobi_test
 
 # ── Full scoreboard ───────────────────────────────────────────
 
