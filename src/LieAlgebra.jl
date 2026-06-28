@@ -73,3 +73,7 @@ function reconstruction_error(G, f)
     end
     return maxerr
 end
+
+function expand_in_basis(X, G)
+    return [real(tr(X*Gi)) for Gi in G]
+end
