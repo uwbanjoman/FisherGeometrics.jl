@@ -95,3 +95,12 @@ function centralizer_matrix(H, embedded, G)
     end
     rows
 end
+
+function cartan_matrix(G::Vector{Matrix{ComplexF64}})
+    H = G[31:35]
+    D = zeros(Float64,5,6)
+    for i in 1:5
+        D[i,:] = real(diag(H[i]))
+    end
+    return D
+end
