@@ -22,6 +22,7 @@
 module M111Spectrum
 
 using LinearAlgebra
+using Printf
 
 export H0, spectrum_scalar, spectrum_vector, spectrum_twoform,
        spectrum_threeform, spectrum_spinor, massless_check,
