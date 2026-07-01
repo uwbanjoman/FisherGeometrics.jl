@@ -20,6 +20,7 @@ include(joinpath(@__DIR__, "Dynamics.jl"))
 include(joinpath(@__DIR__, "Gravity.jl"))
 include(joinpath(@__DIR__, "Evolution.jl"))
 include(joinpath(@__DIR__, "LieAlgebra.jl"))
+include(joinpath(@__DIR__, "M111Spectrum.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
 
@@ -70,6 +71,11 @@ export commutator, anticommutator, inner
 export structure_constants, jacobi_test
 export reconstruction_error, expand_in_basis
 export centralizer_matrix, cartan_matrix, expansion_matrix
+
+# M111Spectrum
+export H0, valid_rep
+export spectrum_scalar, spectrum_vector, spectrum_twoform, spectrum_threeeform, spectrum_spinor
+export kk_spectrum, massless_check, lowest_massive_spinor
 
 # ── Full scoreboard ───────────────────────────────────────────
 
