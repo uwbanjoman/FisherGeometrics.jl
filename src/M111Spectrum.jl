@@ -19,14 +19,8 @@
 #
 # © 2026 Jan Bouwman — MIT License
 
-module M111Spectrum
-
 using LinearAlgebra
 using Printf
-
-export H0, spectrum_scalar, spectrum_vector, spectrum_twoform,
-       spectrum_threeform, spectrum_spinor, massless_check,
-       kk_spectrum, lowest_massive_spinor
 
 # ── Core Casimir eigenvalue ──────────────────────────────────────
 
@@ -347,4 +341,3 @@ function lowest_massive_spinor(; M1max::Int=4, J_extra::Int=2)
     return results[1]
 end
 
-end # module
