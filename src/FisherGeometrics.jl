@@ -103,7 +103,9 @@ export ddmetric, ddmetric_tensor
 export christoffel
 
 # Curvature.jl
-export riemann
+export riemann, ricci
+
+
 # ── Full scoreboard ───────────────────────────────────────────
 
 function scoreboard()
