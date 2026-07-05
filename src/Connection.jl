@@ -28,7 +28,7 @@ function christoffel(g::FisherMetric,
     #
     # metric tensor
     #
-    G = metric_matrix(ρ, basis)
+    G = metric_matrix(g, ρ, basis)
 
     #
     # inverse metric
