@@ -94,7 +94,7 @@ export FisherMetric
 export metric, metric_matrix, check_metric_normalization
 
 # MetricDerivative.jl
-export dmetric
+export dmetric, metric_derivatives
 
 # Connection.jl
 export christoffel
