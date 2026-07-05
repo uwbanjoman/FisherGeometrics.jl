@@ -23,6 +23,7 @@ include(joinpath(@__DIR__, "LieAlgebra.jl"))
 include(joinpath(@__DIR__, "M111Spectrum.jl"))
 include(joinpath(@__DIR__, "Operators.jl"))
 include(joinpath(@__DIR__, "DensityMatrices.jl"))
+include(joinpath(@__DIR__, "Metrics.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
 
@@ -85,6 +86,10 @@ export Lρ_inv, Lρ_inv_matrix, Lρ_sqrt_inv, dLρ, dLρ_inv
 
 # DensityMatrices.jl
 export maximally_mixed, is_density_matrix
+
+# Metrics.jl
+export FisherMetric
+export metric, metric_matrix
 
 # ── Full scoreboard ───────────────────────────────────────────
 
