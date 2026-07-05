@@ -1,8 +1,6 @@
 # src/Operators.jl
 using LinearAlgebra
 
-
-
 # ============================================================
 # Jordan product
 #
@@ -105,24 +103,11 @@ Solve
 
 Lρ(Y)=X
 """
-function Lρ_inv(ρ::AbstractMatrix,
-                X::AbstractMatrix)
-    λ = eigvals(Hermitian(ρ))
-
-    if minimum(λ) ≤ 1e-12
-        throw(ArgumentError(
-            "Lρ_inv is only defined for full-rank density matrices."
-        ))
-    end
-    
-    n=size(ρ,1)
-
-    L=Lρ_matrix(ρ)
-
-    Y=L\vec(X)
-
-    return reshape(Y,n,n)
-
+function Lρ_inv(ρ::AbstractMatrix, X::AbstractMatrix)
+    n = size(ρ, 1)
+    L = Lρ_matrix(ρ)
+    Y = pinv(L; atol=1e-12) * vec(X)
+    return reshape(Y, n, n)
 end
 
 """
