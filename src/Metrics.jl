@@ -63,64 +63,6 @@ function metric_matrix(::FisherMetric,
 
 end
 
-"""
-    ddmetric_tensor(g, ρ, basis)
-
-Compute the second directional derivatives of the Fisher metric in the
-basis of tangent vectors.
-
-Returns the rank-4 tensor
-
-    ddg[i,j,k,l] =
-        D²gρ(Hₖ,Hₗ)(Xᵢ,Xⱼ),
-
-where
-
-- `Xᵢ = basis[i]`,
-- `Hₖ = basis[k]`.
-
-The tensor is symmetric in
-
-- `(i,j)` because the metric is symmetric;
-- `(k,l)` because mixed directional derivatives commute.
-"""
-function ddmetric_tensor(g::FisherMetric,
-                         ρ::AbstractMatrix,
-                         basis)
-
-    n = length(basis)
-
-    T = zeros(Float64, n, n, n, n)
-
-    for i in 1:n
-        Xi = basis[i]
-
-        for j in 1:n
-            Yj = basis[j]
-
-            for k in 1:n
-                Hk = basis[k]
-
-                for l in 1:n
-                    Hl = basis[l]
-
-                    T[i,j,k,l] =
-                        ddmetric(g,
-                                 ρ,
-                                 Xi,
-                                 Yj,
-                                 Hk,
-                                 Hl)
-
-                end
-            end
-        end
-    end
-
-    return T
-
-end
-
 function check_metric_normalization(n)
 
     ρ = maximally_mixed(n)
