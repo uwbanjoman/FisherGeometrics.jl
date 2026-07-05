@@ -85,3 +85,51 @@ function metric_derivatives(g::FisherMetric,
 
     return dg
 end
+
+"""
+    ddmetric(g, ρ, X, Y, H, K)
+
+Second directional derivative of the Fisher metric.
+
+Returns
+
+    D²gρ(H,K)(X,Y)
+
+where `H` and `K` are tangent directions and `X`,`Y` are the metric
+arguments.
+
+The implementation uses
+
+    D²Lρ = 0
+
+since the Jordan operator is linear in `ρ`.
+"""
+function ddmetric(::FisherMetric,
+                  ρ::AbstractMatrix,
+                  X::AbstractMatrix,
+                  Y::AbstractMatrix,
+                  H::AbstractMatrix,
+                  K::AbstractMatrix)
+
+    # Lρ⁻¹(Y)
+    LY = Lρ_inv(ρ, Y)
+
+    #
+    # First contribution
+    #
+    T1 = Lρ_inv(ρ,
+                jordan(K,
+                    Lρ_inv(ρ,
+                        jordan(H, LY))))
+
+    #
+    # Second contribution
+    #
+    T2 = Lρ_inv(ρ,
+                jordan(H,
+                    Lρ_inv(ρ,
+                        jordan(K, LY))))
+
+    return real(tr(X * (T1 + T2))) / 2
+
+end
