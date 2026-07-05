@@ -21,6 +21,7 @@ include(joinpath(@__DIR__, "Gravity.jl"))
 include(joinpath(@__DIR__, "Evolution.jl"))
 include(joinpath(@__DIR__, "LieAlgebra.jl"))
 include(joinpath(@__DIR__, "M111Spectrum.jl"))
+include(joinpath(@__DIR__, "Operators.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
 
@@ -76,6 +77,10 @@ export centralizer_matrix, cartan_matrix, expansion_matrix
 export H0, valid_rep
 export spectrum_scalar, spectrum_vector, spectrum_twoform, spectrum_threeeform, spectrum_spinor
 export kk_spectrum, massless_check, lowest_massive_spinor
+
+# Operators.jl
+export jordan, Lρ, Rρ, Lρ_matrix, Rρ_matrix
+export Lρ_inv, Lρ_inv_matrix, Lρ_sqrt_inv, dLρ, dLρ_inv
 
 # ── Full scoreboard ───────────────────────────────────────────
 
