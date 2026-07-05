@@ -26,6 +26,7 @@ include(joinpath(@__DIR__, "DensityMatrices.jl"))
 include(joinpath(@__DIR__, "Metrics.jl"))
 include(joinpath(@__DIR__, "MetricDerivative.jl"))
 include(joinpath(@__DIR__, "Connection.jl"))
+include(joinpath(@__DIR__, "Curvature.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
 
@@ -100,6 +101,9 @@ export ddmetric, ddmetric_tensor
 
 # Connection.jl
 export christoffel
+
+# Curvature.jl
+export riemann
 # ── Full scoreboard ───────────────────────────────────────────
 
 function scoreboard()
