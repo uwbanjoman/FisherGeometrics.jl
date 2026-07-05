@@ -2,14 +2,6 @@
 
 using LinearAlgebra
 
-import ..:
-    Lρ,
-    Lρ_inv,
-    dLρ
-
-import ..:
-    FisherMetric
-
 """
     dmetric(metric, ρ, X, Y, Z)
 
