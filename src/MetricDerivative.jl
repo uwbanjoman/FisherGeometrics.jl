@@ -2,12 +2,12 @@
 
 using LinearAlgebra
 
-import ..Operators:
+import Operators:
     Lρ,
     Lρ_inv,
     dLρ
 
-import ..Metrics:
+import Metrics:
     FisherMetric
 
 """
