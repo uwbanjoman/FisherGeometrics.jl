@@ -25,6 +25,7 @@ include(joinpath(@__DIR__, "Operators.jl"))
 include(joinpath(@__DIR__, "DensityMatrices.jl"))
 include(joinpath(@__DIR__, "Metrics.jl"))
 include(joinpath(@__DIR__, "MetricDerivative.jl"))
+include(joinpath(@__DIR__, "Connection.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
 
@@ -95,6 +96,8 @@ export metric, metric_matrix, check_metric_normalization
 # MetricDerivative.jl
 export dmetric
 
+# Connection.jl
+export christoffel
 # ── Full scoreboard ───────────────────────────────────────────
 
 function scoreboard()
