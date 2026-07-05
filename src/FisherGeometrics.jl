@@ -24,6 +24,7 @@ include(joinpath(@__DIR__, "M111Spectrum.jl"))
 include(joinpath(@__DIR__, "Operators.jl"))
 include(joinpath(@__DIR__, "DensityMatrices.jl"))
 include(joinpath(@__DIR__, "Metrics.jl"))
+include(joinpath(@__DIR__, "MetricDerivative.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
 
@@ -90,6 +91,9 @@ export maximally_mixed, is_density_matrix
 # Metrics.jl
 export FisherMetric
 export metric, metric_matrix, check_metric_normalization
+
+# MetricDerivative.jl
+export dmetric
 
 # ── Full scoreboard ───────────────────────────────────────────
 
