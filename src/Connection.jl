@@ -19,70 +19,27 @@ where
 
     ∇_{e_i} e_j = Σₖ Γᵏᵢⱼ e_k
 """
-function christoffel(g::FisherMetric,
-                     ρ::AbstractMatrix,
-                     basis::AbstractVector)
+function christoffel(g::FisherMetric, ρ, basis)
 
-    N = length(basis)
-
-    #
-    # metric tensor
-    #
-    G = metric_matrix(g, ρ, basis)
-
-    #
-    # inverse metric
-    #
+    G    = metric_matrix(g, ρ, basis)
     Ginv = inv(G)
+    dg   = metric_derivatives(g, ρ, basis)
 
-    #
-    # metric derivatives
-    #
-    D = zeros(Float64,N,N,N)
+    nbasis = length(basis)
 
-    for k in 1:N
-        H = basis[k]
+    Γ = zeros(eltype(G), nbasis, nbasis, nbasis)
 
-        for i in 1:N
-            X = basis[i]
-
-            for j in 1:N
-                Y = basis[j]
-
-                D[k,i,j] = dmetric(g,ρ,X,Y,H)
-
-            end
-        end
-    end
-
-    #
-    # Christoffel symbols
-    #
-    Γ = zeros(Float64,N,N,N)
-
-    for i in 1:N
-        for j in 1:N
-            for k in 1:N
-
-                s = 0.0
-
-                for l in 1:N
-
-                    s += Ginv[k,l] *
-                        (
-                            D[i,j,l] +
-                            D[j,i,l] -
-                            D[l,i,j]
-                        )
-
-                end
-
-                Γ[i,j,k] = 0.5*s
-
+    for i in 1:nbasis
+        for j in 1:nbasis
+            for k in 1:nbasis
+                Γ[i,j,k] = 0.5 * sum(
+                    Ginv[k,l] *
+                    (dg[j,l,i] + dg[i,l,j] - dg[i,j,l])
+                    for l in 1:nbasis
+                )
             end
         end
     end
 
     return Γ
-
 end
