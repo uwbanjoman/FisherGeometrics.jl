@@ -6,7 +6,7 @@ struct LeviCivitaConnection <: AbstractConnection
 end
 
 """
-    christoffel(ρ, basis)
+    christoffel(g, ρ, basis)
 
 Compute the Levi-Civita connection Γⁱⱼₖ of the Fisher/Bures metric
 in the supplied tangent-space basis.
@@ -19,7 +19,8 @@ where
 
     ∇_{e_i} e_j = Σₖ Γᵏᵢⱼ e_k
 """
-function christoffel(ρ::AbstractMatrix,
+function christoffel(g::FisherMetric,
+                     ρ::AbstractMatrix,
                      basis::AbstractVector)
 
     N = length(basis)
@@ -38,8 +39,6 @@ function christoffel(ρ::AbstractMatrix,
     # metric derivatives
     #
     D = zeros(Float64,N,N,N)
-
-    g = FisherMetric()
 
     for k in 1:N
         H = basis[k]
