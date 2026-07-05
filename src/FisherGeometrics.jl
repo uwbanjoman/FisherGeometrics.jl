@@ -89,7 +89,7 @@ export maximally_mixed, is_density_matrix
 
 # Metrics.jl
 export FisherMetric
-export metric, metric_matrix
+export metric, metric_matrix, check_metric_normalization
 
 # ── Full scoreboard ───────────────────────────────────────────
 
