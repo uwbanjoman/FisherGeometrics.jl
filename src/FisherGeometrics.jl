@@ -84,7 +84,7 @@ export jordan, Lρ, Rρ, Lρ_matrix, Rρ_matrix
 export Lρ_inv, Lρ_inv_matrix, Lρ_sqrt_inv, dLρ, dLρ_inv
 
 # DensityMatrices.jl
-export maximally_mixed
+export maximally_mixed, is_density_matrix
 
 # ── Full scoreboard ───────────────────────────────────────────
 
