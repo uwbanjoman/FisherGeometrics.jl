@@ -7,7 +7,7 @@ import ..Operators:
     Lρ_inv,
     dLρ
 
-import ..Metric:
+import ..Metrics:
     FisherMetric
 
 """
