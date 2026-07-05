@@ -107,7 +107,14 @@ Lρ(Y)=X
 """
 function Lρ_inv(ρ::AbstractMatrix,
                 X::AbstractMatrix)
+    λ = eigvals(Hermitian(ρ))
 
+    if minimum(λ) ≤ 1e-12
+        throw(ArgumentError(
+            "Lρ_inv is only defined for full-rank density matrices."
+        ))
+    end
+    
     n=size(ρ,1)
 
     L=Lρ_matrix(ρ)
