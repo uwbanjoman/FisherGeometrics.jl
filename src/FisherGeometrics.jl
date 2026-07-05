@@ -91,10 +91,12 @@ export maximally_mixed, is_density_matrix
 
 # Metrics.jl
 export FisherMetric
-export metric, metric_matrix, check_metric_normalization
+export metric, metric_matrix
+export check_metric_normalization
 
 # MetricDerivative.jl
-export dmetric, metric_derivatives, ddmetric
+export dmetric, metric_derivatives
+export ddmetric, ddmetric_tensor
 
 # Connection.jl
 export christoffel
