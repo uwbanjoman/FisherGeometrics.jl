@@ -22,6 +22,7 @@ include(joinpath(@__DIR__, "Evolution.jl"))
 include(joinpath(@__DIR__, "LieAlgebra.jl"))
 include(joinpath(@__DIR__, "M111Spectrum.jl"))
 include(joinpath(@__DIR__, "Operators.jl"))
+include(joinpath(@__DIR__, "DensityMatrices.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
 
@@ -81,6 +82,9 @@ export kk_spectrum, massless_check, lowest_massive_spinor
 # Operators.jl
 export jordan, Lρ, Rρ, Lρ_matrix, Rρ_matrix
 export Lρ_inv, Lρ_inv_matrix, Lρ_sqrt_inv, dLρ, dLρ_inv
+
+# DensityMatrices.jl
+export maximally_mixes
 
 # ── Full scoreboard ───────────────────────────────────────────
 
