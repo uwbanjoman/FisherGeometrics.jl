@@ -62,3 +62,17 @@ function metric_matrix(::FisherMetric,
     return G
 
 end
+
+function check_metric_normalization(n)
+
+    ρ = maximally_mixed(n)
+
+    basis = gellmann_basis(n)
+
+    g = FisherMetric()
+
+    G = metric_matrix(g, ρ, basis)
+
+    println("‖G - (n/2)I‖ = ",
+            norm(G - (n/2)*I, Inf))
+end
