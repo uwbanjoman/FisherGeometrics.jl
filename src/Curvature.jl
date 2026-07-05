@@ -119,3 +119,41 @@ function riemann(g::FisherMetric,
     return R
 
 end
+
+"""
+    ricci(g, ρ, basis)
+
+Compute the Ricci curvature tensor associated with the
+Fisher metric.
+
+Returns an n×n matrix
+
+    Ric[i,j].
+"""
+function ricci(g::FisherMetric,
+               ρ::AbstractMatrix,
+               basis)
+
+    R = riemann(g, ρ, basis)
+
+    n = length(basis)
+
+    Ric = zeros(Float64,n,n)
+
+    for i in 1:n
+        for j in 1:n
+
+            s = 0.0
+
+            for m in 1:n
+                s += R[m,i,m,j]
+            end
+
+            Ric[i,j] = s
+
+        end
+    end
+
+    return Ric
+
+end
