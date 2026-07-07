@@ -157,3 +157,33 @@ function ricci(g::FisherMetric,
     return Ric
 
 end
+
+"""
+    scalar_curvature(g, ρ, basis)
+
+Fisher scalar curvature
+
+S = g^{ij} R_{ij}
+"""
+function scalar_curvature(g::FisherMetric,
+                          ρ::AbstractMatrix,
+                          basis)
+
+    G    = metric_matrix(g, ρ, basis)
+    Ginv = inv(G)
+
+    Ric = ricci(g, ρ, basis)
+
+    n = size(G,1)
+
+    S = 0.0
+
+    for i in 1:n
+        for j in 1:n
+            S += Ginv[i,j] * Ric[i,j]
+        end
+    end
+
+    return S
+
+end
