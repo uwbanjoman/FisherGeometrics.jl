@@ -27,6 +27,7 @@ include(joinpath(@__DIR__, "Metrics.jl"))
 include(joinpath(@__DIR__, "MetricDerivative.jl"))
 include(joinpath(@__DIR__, "Connection.jl"))
 include(joinpath(@__DIR__, "Curvature.jl"))
+include(joinpath(@__DIR__, "Actions.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
 
@@ -103,7 +104,10 @@ export ddmetric, ddmetric_tensor
 export christoffel
 
 # Curvature.jl
-export riemann, ricci
+export riemann, ricci, scalar_curvature
+
+# Actions.jl
+export information_action
 
 
 # ── Full scoreboard ───────────────────────────────────────────
