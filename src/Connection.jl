@@ -22,7 +22,7 @@ where
 function christoffel(g::FisherMetric, ρ, basis)
 
     G    = metric_matrix(g, ρ, basis)
-    Ginv = inv(G)
+    Ginv = pinv(G)
     dg   = metric_derivatives(g, ρ, basis)
 
     nbasis = length(basis)
