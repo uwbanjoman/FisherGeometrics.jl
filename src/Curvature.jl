@@ -165,10 +165,11 @@ Fisher scalar curvature
 
 S = g^{ij} R_{ij}
 """
-function scalar_curvature(g::FisherMetric,
-                          ρ::AbstractMatrix,
-                          basis)
-    if isdiag(ρ)
+function scalar_curvature(g::FisherMetric, ρ::AbstractMatrix, basis)
+    if ρ isa Diagonal
+        # Als het al een Diagonal is, mag hij HIER niet inkomen.
+        # Dit vangt situaties op waarin de splitsing misgaat.
+    elseif isdiag(ρ)
         return scalar_curvature(g, Diagonal(ρ), basis)
     end
     G    = metric_matrix(g, ρ, basis)
