@@ -154,7 +154,7 @@ function sectional_K(ρ::AbstractMatrix, T::Vector,
                      a::Int, b::Int; eps::Float64=5e-3)
     N = length(T)
     G    = metric_matrix(ρ, T)
-    G_inv = inv(G)
+    G_inv = pinv(G)
 
     Γ0 = christoffel(ρ, T, G_inv; eps=eps)
 
