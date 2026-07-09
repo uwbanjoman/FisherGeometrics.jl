@@ -104,10 +104,67 @@ Solve
 Lρ(Y)=X
 """
 function Lρ_inv(ρ::AbstractMatrix, X::AbstractMatrix)
-    n = size(ρ, 1)
-    L = Lρ_matrix(ρ)
-    Y = pinv(L; atol=1e-12) * vec(X)
-    return reshape(Y, n, n)
+
+    if isdiag(ρ)
+
+        return Lρ_inv_diag(ρ, X)
+
+    else
+
+        A = Lρ_matrix(ρ)
+
+        return reshape(
+            pinv(A) * vec(X),
+            size(X)
+        )
+
+    end
+
+end
+#function Lρ_inv(ρ::AbstractMatrix, X::AbstractMatrix)
+#    n = size(ρ, 1)
+#    L = Lρ_matrix(ρ)
+#    Y = pinv(L; atol=1e-12) * vec(X)
+#    return reshape(Y, n, n)
+#end
+
+"""
+    Lρ_inv_diag(ρ, X)
+
+Analytische oplossing van
+
+    ρL + Lρ = 2X
+
+voor een diagonale dichtheidsmatrix.
+
+Geen pseudo-inverse.
+Geen SVD.
+Complexiteit O(n²).
+"""
+function Lρ_inv_diag(λ::AbstractVector, X)
+
+    n = length(λ)
+
+    L = similar(X)
+
+    @inbounds for i in 1:n
+        λi = λ[i]
+
+        for j in 1:n
+
+            s = λi + λ[j]
+
+            if s < eps(Float64)
+                L[i,j] = zero(eltype(X))
+            else
+                L[i,j] = 2X[i,j] / s
+            end
+
+        end
+    end
+
+    return L
+
 end
 
 """
