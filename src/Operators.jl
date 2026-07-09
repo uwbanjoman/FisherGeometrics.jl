@@ -141,7 +141,7 @@ Geen pseudo-inverse.
 Geen SVD.
 Complexiteit O(n²).
 """
-function Lρ_inv_diag(λ::AbstractVector, X)
+function Lρ_inv_diag(λ::AbstractVecOrMat, X)
 
     n = length(λ)
 
