@@ -212,7 +212,9 @@ The tensor is symmetric in
 function ddmetric_tensor(g::FisherMetric,
                          ρ::AbstractMatrix,
                          basis)
-
+    if isdiag(ρ)
+        return ddmetric_tensor(g, Diagonal(ρ), basis)
+    end
     n = length(basis)
 
     T = zeros(Float64, n, n, n, n)
@@ -244,4 +246,66 @@ function ddmetric_tensor(g::FisherMetric,
 
     return T
 
+end
+
+"""
+    ddmetric_tensor(g::FisherMetric, ρ::Diagonal, basis)
+
+Geoptimaliseerde tweede directionele afgeleiden voor diagonale density matrices.
+Elimineert de honderdduizenden numerieke differentiatie-allocaties.
+"""
+function ddmetric_tensor(g::FisherMetric, ρ::Diagonal{T}, basis) where {T<:Real}
+    n = length(basis)
+    ddg = zeros(Float64, n, n, n, n)
+    mat_dim = size(ρ, 1)
+    diag_ρ = ρ.diag
+
+    # Pre-allocateer de derdegraads denominators (λ_i + λ_j)³
+    inv_denom_cube = Matrix{T}(undef, mat_dim, mat_dim)
+    for j in 1:mat_dim
+        λ_j = diag_ρ[j]
+        for i in 1:mat_dim
+            denom = diag_ρ[i] + λ_j
+            inv_denom_cube[i, j] = denom > 1e-12 ? 1.0 / (denom^3) : 0.0
+        end
+    end
+
+    # Analytische 4D contractielus
+    for i in 1:n
+        Xi = basis[i]
+        for j in i:n
+            Xj = basis[j]
+            
+            for k in 1:n
+                Hk = basis[k]
+                for l in k:n
+                    Hl = basis[l]
+                    
+                    accum = 0.0
+                    @inbounds for b in 1:mat_dim
+                        for a in 1:mat_dim
+                            # Tweede orde afgeleide-bijdrage van de diagonale verschuivingen
+                            dH_k = real(Hk[a, a] + Hk[b, b])
+                            dH_l = real(Hl[a, a] + Hl[b, b])
+                            
+                            accum += real(Xi[b, a] * Xj[a, b]) * dH_k * dH_l * inv_denom_cube[a, b]
+                        end
+                    end
+                    
+                    # De tweede afgeleide van 1/(p_i+p_j) levert een factor 2 * (1/(p_i+p_j)³) 
+                    # Gecombineerd met de 0.5 van de metriek-definitie geeft dit val:
+                    val = accum # (0.5 * 2 = 1.0)
+                    
+                    # Profiteer van alle symmetrieën in de 4-tensor:
+                    # Symmetrisch in (i,j) en symmetrisch in (k,l)
+                    ddg[i, j, k, l] = val
+                    ddg[j, i, k, l] = val
+                    ddg[i, j, l, k] = val
+                    ddg[j, i, l, k] = val
+                end
+            end
+        end
+    end
+
+    return ddg
 end
