@@ -116,7 +116,8 @@ function Lρ_inv(ρ::Diagonal{T}, X::AbstractMatrix{C}; tol=1e-12) where {T<:Rea
             end
         end
     end
-return L
+    return L
+end
 
 """
     Lρ_inv(ρ,X)
