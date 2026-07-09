@@ -61,6 +61,9 @@ The tensor `dg` is symmetric in its first two indices.
 function metric_derivatives(g::FisherMetric,
                             ρ::AbstractMatrix,
                             basis)
+    if isdiag(ρ)
+        return metric_derivatives(g, Diagonal(ρ), basis)
+    end
 
     n = length(basis)
 
@@ -79,6 +82,57 @@ function metric_derivatives(g::FisherMetric,
 
                 dg[i,j,k] = val
                 dg[j,i,k] = val
+            end
+        end
+    end
+
+    return dg
+end
+
+"""
+    metric_derivatives(g::FisherMetric, ρ::Diagonal, basis)
+
+Geoptimaliseerde directionele afgeleiden voor diagonale density matrices.
+Voorkomt de zware overhead van numerieke differentiatie.
+"""
+function metric_derivatives(g::FisherMetric, ρ::Diagonal{T}, basis) where {T<:Real}
+    n = length(basis)
+    dg = zeros(Float64, n, n, n)
+    mat_dim = size(ρ, 1)
+    diag_ρ = ρ.diag
+
+    # Pre-allocateer de kwadratische denominators
+    inv_denom_sq = Matrix{T}(undef, mat_dim, mat_dim)
+    for j in 1:mat_dim
+        λ_j = diag_ρ[j]
+        for i in 1:mat_dim
+            denom = diag_ρ[i] + λ_j
+            inv_denom_sq[i, j] = denom > 1e-12 ? 1.0 / (denom^2) : 0.0
+        end
+    end
+
+    # Als we op een maximally mixed state zitten, zijn de afgeleiden 0.0.
+    # We berekenen het hier expliciet via de analytische element-wise formule:
+    for i in 1:n
+        Xi = basis[i]
+        for j in i:n
+            Xj = basis[j]
+            for k in 1:n
+                Hk = basis[k]
+                
+                accum = 0.0
+                @inbounds for b in 1:mat_dim
+                    for a in 1:mat_dim
+                        # Richtingafgeleide-bijdrage van de diagonale verschuiving
+                        # (Hk[a,a] + Hk[b,b]) vertegenwoordigt dρ
+                        dH = real(Hk[a, a] + Hk[b, b])
+                        accum += real(Xi[b, a] * Xj[a, b]) * dH * inv_denom_sq[a, b]
+                    end
+                end
+                
+                val = -0.5 * accum
+                dg[i, j, k] = val
+                dg[j, i, k] = val
             end
         end
     end
