@@ -19,7 +19,7 @@ function riemann(g::FisherMetric,
     n = length(basis)
 
     G    = metric_matrix(g, ρ, basis)
-    Ginv = inv(G)
+    Ginv = pinv(G)
 
     dg  = metric_derivatives(g, ρ, basis)
     ddg = ddmetric_tensor(g, ρ, basis)
