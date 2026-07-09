@@ -97,30 +97,34 @@ end
 # ============================================================
 
 """
+    Lρ_inv(ρ::Diagonal, X::AbstractMatrix; tol=1e-12)
+
+Geoptimaliseerde, allocatie-arme SLD solver voor diagonale density matrices.
+Bypasst de zware kron- en pinv-operaties.
+"""
+function Lρ_inv(ρ::Diagonal{T}, X::AbstractMatrix{C}; tol=1e-12) where {T<:Real, C<:Number}
+    n = size(ρ, 1)
+    L = zeros(C, n, n)
+    diag_ρ = ρ.diag
+    
+    @inbounds for j in 1:n
+        λ_j = diag_ρ[j]
+        for i in 1:n
+            denom = diag_ρ[i] + λ_j
+            if denom > tol
+                L[i, j] = 2 * X[i, j] / denom
+            end
+        end
+    end
+return L
+
+"""
     Lρ_inv(ρ,X)
 
 Solve
 
 Lρ(Y)=X
 """
-function Lρ_inv(ρ::AbstractMatrix, X::AbstractMatrix)
-
-    if isdiag(ρ)
-
-        return Lρ_inv_diag(ρ, X)
-
-    else
-
-        A = Lρ_matrix(ρ)
-
-        return reshape(
-            pinv(A) * vec(X),
-            size(X)
-        )
-
-    end
-
-end
 #function Lρ_inv(ρ::AbstractMatrix, X::AbstractMatrix)
 #    n = size(ρ, 1)
 #    L = Lρ_matrix(ρ)
