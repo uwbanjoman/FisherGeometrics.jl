@@ -119,6 +119,19 @@ function Lρ_inv(ρ::Diagonal{T}, X::AbstractMatrix{C}; tol=1e-12) where {T<:Rea
     return L
 end
 
+function Lρ_inv(ρ::AbstractMatrix, X::AbstractMatrix; tol=1e-12)
+    if isdiag(ρ)
+        return Lρ_inv(Diagonal(ρ), X; tol=tol) # Schakelt direct over naar je snelle loop!
+    end
+    
+    # Fallback voor als ρ écht een dichte, niet-diagonale matrix is (bv. pure states of mixed)
+    n = size(ρ, 1)
+    A = kron(ρ, I(n)) + kron(I(n), transpose(ρ))
+    b = 2 * vec(ComplexF64.(X))
+    L = reshape(pinv(A; atol=tol) * b, n, n)
+    return (L + L') / 2
+end
+
 """
     Lρ_inv(ρ,X)
 
