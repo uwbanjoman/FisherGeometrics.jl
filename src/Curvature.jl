@@ -170,7 +170,7 @@ function scalar_curvature(g::FisherMetric,
                           basis)
 
     G    = metric_matrix(g, ρ, basis)
-    Ginv = inv(G)
+    Ginv = pinv(G)
 
     Ric = ricci(g, ρ, basis)
 
