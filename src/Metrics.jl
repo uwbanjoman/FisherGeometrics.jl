@@ -179,18 +179,36 @@ end
 Calculates the gradient of the Fisher Information Metric 
 with respect to the parameter vector θ (the CKM angles).
 """
-function grad_fisher_metric(θ::Vector)
-    # Gebruik centrale differentie om de gradiënt te benaderen
-    # als je geen analytische afgeleide hebt.
+function grad_fisher_metric(angles::Vector{Float64})
     h = 1e-6
-    n = length(θ)
-    grad = similar(θ, Matrix{Float64})
+    n = length(angles)
+    grad = Vector{Matrix{Float64}}(undef, n)
+    
+    # Bewaar de huidige staat (hier moet je jouw mechanisme voor de 'huidige staat' invullen)
+    original_state = get_current_state() 
     
     for i in 1:n
-        θ_plus = copy(θ); θ_plus[i] += h
-        θ_minus = copy(θ); θ_minus[i] -= h
-        grad[i] = (FisherMetric(θ_plus) - FisherMetric(θ_minus)) / (2h)
+        # Perturbeer de hoeken
+        new_angles = copy(angles)
+        new_angles[i] += h
+        
+        # Update het systeem naar de nieuwe hoeken (in jouw eigen API)
+        set_angles!(new_angles)
+        
+        # Bereken metriek voor de nieuwe staat
+        m_plus = FisherMetric()
+        
+        # Reset en bereken voor min
+        new_angles[i] -= 2h
+        set_angles!(new_angles)
+        m_minus = FisherMetric()
+        
+        # Numerieke afgeleide
+        grad[i] = (m_plus - m_minus) / (2h)
     end
+    
+    # Herstel de originele staat
+    set_angles!(original_state)
     
     return grad
 end
