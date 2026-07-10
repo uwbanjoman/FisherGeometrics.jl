@@ -13,19 +13,53 @@ function interaction(ρ::AbstractMatrix, ops::AbstractMatrix)
 end
 
 """
-    geometric_acceleration(ρ::AbstractMatrix, ops::AbstractMatrix, v::Float64)
+    geometric_acceleration(g::FisherMetric, ρ::AbstractMatrix, basis, v::Vector{Float64})
 
-The resulting acceleration from the manifold curvature and the field response.
+Calculate the geodesic acceleration on the Fisher-Bures manifold.
+
+Computes the acceleration vector `a_g` associated with the geodesic equation:
+    a^i_g = -∑_{j,k} Γ^i_{jk} v^j v^k
+
+where:
+- `Γ^i_{jk}` are the Christoffel symbols of the second kind derived from the 
+  Fisher metric `g` and its first derivatives.
+- `v` is the tangent velocity vector in the parameter space spanned by `basis`.
+
+The Christoffel symbols are calculated using the relation:
+    Γ^i_{jk} = 0.5 * G^{im} * (∂_k g_{mj} + ∂_j g_{mk} - ∂_m g_{jk})
 """
-function geometric_acceleration(ρ::AbstractMatrix, ops::AbstractMatrix, v::Float64)
-    # Geodesic component from the metric
-    a_g = geodesic_acceleration(g, dg_dθ, v)
+function geometric_acceleration(g::FisherMetric, ρ::AbstractMatrix, basis, v::Vector{Float64})
+    n = length(basis)
     
-    # Interaction component (field response)
-    # The flux gradient determines the 'push' in the manifold
-    f_flux = -1.0 * grad_flux(ρ, ops)
+    if length(v) != n
+        error("Snelheidsvector v moet lengte " * string(n) * " hebben.")
+    end
+
+    G = metric_matrix(g, ρ, basis)
+    Ginv = pinv(G)
+    dg = metric_derivatives(g, ρ, basis)
     
-    return a_g + f_flux
+    Γ = zeros(Float64, n, n, n)
+    for i in 1:n
+        for j in 1:n
+            for k in 1:n
+                for m in 1:n
+                    Γ[i,j,k] += 0.5 * Ginv[i,m] * (dg[m,j,k] + dg[m,k,j] - dg[j,k,m])
+                end
+            end
+        end
+    end
+    
+    a_g = zeros(Float64, n)
+    for i in 1:n
+        for j in 1:n
+            for k in 1:n
+                a_g[i] -= Γ[i,j,k] * v[j] * v[k]
+            end
+        end
+    end
+    
+    return a_g
 end
 
 """
