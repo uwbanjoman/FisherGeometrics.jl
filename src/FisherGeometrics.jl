@@ -111,7 +111,8 @@ export riemann, ricci, scalar_curvature
 export information_action
 
 # Interactions.jl
-export flux
+export interaction, flux, covariant_shift, u1_generator
+export su2_generator, check_interactions
 
 
 # ── Full scoreboard ───────────────────────────────────────────
