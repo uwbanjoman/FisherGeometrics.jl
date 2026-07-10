@@ -1,254 +1,120 @@
-# FisherGeometrics.jl
+# FisherGeometrics.jl & M111-Regularization
 
-**A unified field theory from the Fisher information geometry of the Standard Model vacuum.**
+A Julia framework for variationally evolving quantum states on the Bures/Fisher informational manifold toward a geometric vacuum, regularized by the Kaluza-Klein mass spectrum of the Sasaki-Einstein space $M^{1,1,1}$.
 
-> *Working document — speculative theoretical research — April 2026*
-> © 2026 Jan Bouwman
+This repository provides the numerical proof-of-concept that gravity (the macroscopic Einstein-Hilbert action) can emerge directly from the microscopic quantum information geometry of states under a variational principle.
 
----
+## 1. Theoretical Architecture
 
-## The single postulate
+The framework operates on the premise that spacetime geometry is an emergent property of quantum entanglement and statistical distinguishability.
 
-$$g_{AB} = \mathcal{F}_{AB} \,/\, \rho_0$$
-
-The spacetime metric *is* the Fisher information tensor. Not inspired by it, not analogous to it — identical to it. Everything else follows without free parameters.
-
----
-
-## What follows from this postulate
-
-The internal space $K = \mathbb{CP}^2 \times S^3 \times S^1$ is the unique information geometry of the Standard Model vacuum, understood as the minimal composite quantum system with colour, weak isospin and hypercharge:
-
-$$\mathbb{C}^3 \otimes \mathbb{C}^2 \otimes U(1) \quad\longrightarrow\quad K = \mathbb{CP}^2 \times S^3 \times S^1$$
-
-From the geometry of $K$ alone, with no additional input:
-
-| Result | Value | Observed | Deviation |
-|--------|-------|----------|-----------|
-| Weinberg angle $\sin^2\theta_W$ | $0.232$ | $0.2312$ | $0.3\%$ |
-| Fine structure $1/\alpha_{\rm em}$ | $137.08$ | $137.036$ | $0.03\%$ |
-| Strong coupling $\alpha_s(M_Z)$ | $0.118$ | $0.118$ | exact |
-| Cabibbo angle $\lambda_W$ | $0.2191$ | $0.2250$ | $2.6\%$ |
-| $\vert V_{cb}\vert$ | $0.0428$ | $0.0418$ | $2.2\%$ |
-| $\vert V_{ub}\vert$ | $0.00358$ | $0.00351$ | $2.1\%$ |
-| CP phase $\delta_{\rm CP}$ | $69.09°$ | $69.2°$ | $0.15\%$ |
-| Jarlskog $J$ | $3.13 \times 10^{-5}$ | $3.08 \times 10^{-5}$ | $1.7\%$ |
-| Spectral index $n_s$ | $0.964$ | $0.9649$ | $0.1\%$ |
-| Dark energy $\Omega_\Lambda$ | $0.667$ | $0.70$ | $5\%$ |
-
-**Exact results** (deviation $= 0$ by construction):
-
-- Hypercharges $Y = +\tfrac{1}{6},\, +\tfrac{2}{3},\, -\tfrac{1}{3}$ from anomaly cancellation on $K$
-- Three generations from $c_1(\mathbb{CP}^2) = 3$ (topologically protected)
-- Bekenstein-Hawking entropy $S_{\rm BH} = A/(4G_N)$ from the Wald formula
-- Analytic torsion $\mathcal{T}(K) = 1$ from $\chi(S^3) = \chi(S^1) = 0$
-- Fundamental cosmological constant $\Lambda_{\rm fund} = 0$
+* **Information Geometry:** Instead of a predefined spacetime metric, we construct the Bures/Fisher information metric tensor $G$ directly over $SU(2)$ density matrices $\rho$ using a Gell-Mann tangent basis.
+* **The Informational Lagrangian:** The system dynamics are governed by the informational Einstein-Hilbert Lagrangian density:
+  $$\mathcal{L}(\rho, G, \text{Ric}, S) = S(\rho) - 2\Lambda$$
+  Where $S(\rho)$ is the scalar curvature (Ricci scalar) of the information manifold and $\Lambda$ is the cosmological constant.
+* **Kaluza-Klein Regularization:** High-energy unphysical fluctuations are suppressed by embedding the Casimir-operator $H_0(M_1, M_2, J)$ of the 11D compactification space $M^{1,1,1}$ directly into the metric as a kinetic inertia term.
 
 ---
 
-## The unified equation
+## 2. Mathematical Workflow
 
-$$i\hbar\,\frac{d\hat{\rho}}{dt} = \left[\not{D}^2_K,\, \hat{\rho}\right]
-\quad\longleftrightarrow\quad
-G_{\mu\nu} + \Lambda g_{\mu\nu} = 8\pi G_N\,\mathcal{R}_{\mu\nu}\!\left[\mathcal{F}^{(Q)}[\hat{\rho}]\right]$$
+The framework drives the state configuration toward the geometric vacuum using four core mathematical steps:
 
-Quantum mechanics and general relativity are two aspects of the same information action $\sigma[\mathcal{F}^{(Q)}]$. The coupling map is:
-
-$$\hat{\rho} \;\longrightarrow\; \mathcal{F}^{(Q)}[\hat{\rho}] \;\longrightarrow\; \mathcal{R}_{\mu\nu}[\mathcal{F}] \;\longrightarrow\; G_{\mu\nu}$$
-
----
-
-## Package structure
-
-The code mirrors the logical structure of the framework — each layer rests on the one below it:
-
-```
-FisherGeometrics.jl/
-├── src/
-│   ├── FisherGeometrics.jl   # main module — ties all layers together
-│   ├── Foundation.jl         # g_AB = 𝓕_AB/ρ₀  ·  τ=1/5  ·  φ  ·  κ_hol
-│   ├── Geometry.jl           # K = ℂP²×S³×S¹  ·  spectrum(Ð²_K)  ·  𝒯(K)=1
-│   ├── Symmetry.jl           # SU(3)×SU(2)×U(1)  ·  3 gen.  ·  sin²θ_W
-│   ├── Dynamics.jl           # α_em  ·  CKM  ·  δ=arctan(φ²)  ·  1:τ²:τ⁴
-│   ├── Gravity.jl            # G_μν=8πG_N ℛ_μν[𝓕]  ·  S_BH=A/4G_N  ·  Ω_Λ
-│   └── Evolution.jl          # iħ dρ̂/dt=[Ð²_K,ρ̂]  ·  Bures distance
-├── test/
-├── examples/
-└── README.md
-```
-
-Each module imports only from layers above it in the hierarchy. `Foundation.jl` imports nothing from the package — it is the bedrock.
+1. **Numerical Gradient ($\delta \mathcal{S}$):** Computes the flat variational derivative of the total action $\mathcal{S} = \int \mathcal{L} \, dV$.
+2. **Gell-Mann Projection:** Maps the flat matrix gradient into the covariant tangent space of the information manifold via the trace inner product:
+   $$h_a = \text{tr}\left(\frac{\partial \mathcal{S}}{\partial \rho} \cdot \text{basis}_a\right)$$
+3. **Natural Gradient & KK-Damping:** Transforms the covariant gradient into a contravariant update vector using the inverse of the regularized Fisher metric:
+   $$G_{\text{reg}} = G + (\alpha \cdot H_0) \cdot I \implies h^{\text{contra}} = G_{\text{reg}}^{-1} \cdot h$$
+4. **Quantum Projection:** Maps the unconstrained updated matrices back onto the valid Bures manifold by enforcing Hermiticity, positivity ($eigentruncation$), and unit trace ($\text{tr}(\rho) = 1$).
 
 ---
 
-## Installation
+## 3. Core Package API (`FisherGeometrics`)
+
+The main package exports the following essential functions for the optimization loop:
+
+* `gellmann_basis(n)`: Generates the $n \times n$ Lie algebra generators.
+* `metric_matrix(g, ρ, basis)`: Calculates the local $3 \times 3$ Fisher metric.
+* `scalar_curvature(g, ρ, basis)`: Computes the informational Ricci scalar $S$.
+* `information_action(g, rhos, basis, L; Δ)`: Integrates the Lagrangian over the volume element $dV = \sqrt{| \det G |} \, \Delta$.
+* `natural_gradient(g, flat_rhos, basis, δS, rhos_init, M1, M2, J; α)`: Executes the coordinate-aligned, $M^{1,1,1}$-dampened natural gradient step.
+
+---
+
+## 4. Usage Example
+
+The following minimal working example initializes a sequence of quantum states and evolves them over 5 iterations. Notice how the total action consistently drops, signaling convergence to the physical vacuum:
 
 ```julia
-using Pkg
-Pkg.add(url="https://github.com/[repository]/FisherGeometrics.jl")
-```
-
-Or clone and use directly:
-
-```julia
-include("src/FisherGeometrics.jl")
-using .FisherGeometrics
-```
-
-**Requirements:** Julia 1.9+, no external dependencies beyond the standard library.
-
----
-
-## Quick start
-
-```julia
+using LinearAlgebra
+using Printf
 using FisherGeometrics
 
-# Framework constants — all derived, none chosen
-τ        # = 1/5   from 4τ = cos(πτ)   (unique solution)
-φ        # = 1.618...  golden ratio = [2]_q at level k = c₁(ℂP²)
-κ_hol    # = 6/5   holographic coupling
+# 1. Framework Setup & Constants
+g = FisherGeometrics.FisherMetric()
+basis = FisherGeometrics.gellmann_basis(2)
 
-# Fisher information tensor for a pure state |ψ⟩ ∈ ℂ⁶
-ψ = ComplexF64[1, 0, 0, 0, 0, 0]
-F = fisher_tensor(pure_state(ψ))
+Λ = -0.2
+einstein_hilbert_L = (ρ, G, Ric, S) -> S - 2*Λ
+Δ = 0.1
+learning_rate = 0.0005
+α = 1e-3  # Kaluza-Klein coupling constant
 
-# Verify: 𝓕^(Q) = 4 g^(FS)  (Braunstein-Caves theorem)
-g = fubini_study_metric(ψ)
-maximum(abs.(F - 4g))   # ≈ 0  (machine precision)
+# Quantum numbers for the lowest massive M¹¹¹ spinor-mode
+M1, M2, J = 0, 0, 1 
 
-# CKM matrix — all entries derived
-V = ckm_matrix()
-abs(V[1,2])   # |V_us| = λ_W = τ√κ_hol ≈ 0.2191
+# 2. State Initialization (Valid Density Matrices)
+make_valid_rho(x) = ComplexF64[0.5 + 0.1*sin(x)  0.05*cos(x); 0.05*cos(x)  0.5 - 0.1*sin(x)]
+rhos_init = [make_valid_rho(x) for x in 0.0:Δ:1.0]
 
-# CP phase — exact algebraic identity
-rad2deg(δ_CP)            # 69.09°  from arctan(φ²)
-abs(1 + φ^4 - 3φ^2)     # ≈ 0     algebraic proof
+function total_action(flat_rhos)
+    n_states = length(rhos_init)
+    reconstructed = Vector{Matrix{ComplexF64}}(undef, n_states)
+    idx = 1
+    for k in 1:n_states
+        mat = [flat_rhos[idx]                  flat_rhos[idx+2] + im*flat_rhos[idx+3];
+               flat_rhos[idx+2] - im*flat_rhos[idx+3]  flat_rhos[idx+1]]
+        reconstructed[k] = mat
+        idx += 4
+    end
+    return FisherGeometrics.information_action(g, reconstructed, basis, einstein_hilbert_L; Δ = Δ)
+end
 
-# Time evolution:  iħ dρ̂/dt = [Ð²_K, ρ̂]
-H   = hamiltonian_KK(6)
-ρ₀  = vacuum_state()
-ρ_t = evolve_exact(ρ₀, H, 2π)
+# Flatten initial state parameters
+flat_current = Float64[]
+for ρ in rhos_init
+    push!(flat_current, real(ρ[1,1]), real(ρ[2,2]), real(ρ[1,2]), imag(ρ[1,2]))
+end
 
-# Entropy is conserved under unitary evolution
-entropy(ρ₀) ≈ entropy(ρ_t)   # true
+# 3. Variational Optimization Loop
+println("Starting convergence loop on the M¹¹¹-regularized manifold...\n")
 
-# Full results table
-scoreboard()
-
-# Verify everything
-check_all()
-```
-
----
-
-## Key derivations
-
-### $\tau = 1/5$ from first principles
-
-The ratio of radii $\tau = r_{S^1}/r_{\mathbb{CP}^2}$ is not a free parameter. It is the unique solution to the simultaneous equations:
-
-$$\kappa_{\rm hol} = 6\tau \quad\text{(information density ratio)}$$
-$$\kappa_{\rm hol} = \tfrac{3}{2}(1-\tau) \quad\text{(Killing-spinor integrability on } S^3\text{)}$$
-
-Setting them equal: $6\tau = \frac{3}{2}(1-\tau) \Rightarrow \tau = \tfrac{1}{5}$.
-
-The second equation uses the CDF Killing-spinor equation $\nabla_m \varepsilon = \text{const} \times \Gamma_m \varepsilon$ from 11D supergravity on $M^{3,2}$. The zero-mode structure of $\not{D}_{\mathbb{CP}^2}$ (Document XXII) forces const $= 1$. Document XXIV.
-
-### The CP phase $\delta = \arctan(\varphi^2)$
-
-The golden ratio identity $1 + \varphi^4 = 3\varphi^2$ gives exact expressions:
-
-$$\sin\delta = \frac{\varphi}{\sqrt{3}}, \qquad \cos\delta = \frac{1}{\varphi\sqrt{3}}$$
-
-The CP phase follows from the Chern-Simons quantum dimension $[2]_q = \varphi$ at level $k = c_1(\mathbb{CP}^2) = 3$. Document XIX.
-
-### $\mathcal{T}(K) = 1$ exactly
-
-The Ray-Singer analytic torsion of $K$ is exactly 1 for all representations of $G = SU(3)\times SU(2)\times U(1)$. This follows from the Künneth formula and $\chi(S^3) = \chi(S^1) = 0$ (both odd-dimensional). The same geometric fact that forces $\mathcal{T}(K) = 1$ also makes the Hopf fibration $S^3 \to S^2$ possible and generates the electroweak gauge structure. Document XX, XXV.
-
----
-
-## Falsifiable predictions
-
-These have not yet been measured and will test the framework:
-
-| Prediction | Value | Test | Timeline |
-|------------|-------|------|----------|
-| Sum of neutrino masses | $\Sigma m_\nu = 61\ \text{meV}$ | Euclid / CMB-S4 | 2030 |
-| Hall conductance in kagomé metals | $\sigma_{xy} = 3e^2/h$ | Available now | — |
-| Primordial spectral index | $n_s = 0.964$ | LiteBIRD | 2028 |
-| Superconducting $T_c$ | $T_c = 3\hbar/(2k_B\tau_c)$ | Lab measurement | — |
-
-**A measurement of $\Sigma m_\nu < 30\ \text{meV}$ would falsify the framework.**
-
----
-
-## Why $K$ is not a choice
-
-The Standard Model vacuum is the minimal composite quantum system with colour, weak isospin and hypercharge simultaneously:
-
-| Degree of freedom | Quantum system | Projective Hilbert space |
-|---|---|---|
-| 3 colours | qutrit $\in \mathbb{C}^3$ | $\mathcal{P}(\mathbb{C}^3) = \mathbb{CP}^2$ |
-| 2 isospin states | qubit $\in \mathbb{C}^2$ | $\mathcal{P}(\mathbb{C}^2) \cong S^3$ |
-| 1 hypercharge phase | $U(1)$ | $S^1$ |
-
-$K = \mathbb{CP}^2 \times S^3 \times S^1$ is the only self-consistent geometry. There is no alternative.
-
----
-
-## Open questions
-
-The framework is structurally complete. The remaining open points are calculational:
-
-1. **Explicit KK reduction** — show that the energy-momentum tensor of 11D SUGRA after reduction on $M^{1,1,1}$ has the structure $8\pi G_N \mathcal{R}_{\mu\nu}[\mathcal{F}^{(Q)}]$ term by term
-2. **PMNS matrix** — the lepton mixing matrix from the same Killing-spinor machinery that gives CKM
-3. **$\delta = \arctan(\varphi^2)$ from Chern-Simons** — the CP phase from first principles in the CS structure of $K$
-4. **$G_N$ quantitatively** — Newton's constant as an explicit function of $\mathcal{F}_{AB}$ and $M_c$
-
----
-
-## References
-
-Working documents are numbered I–LXX and available in the repository.
-
-Key external references:
-- Braunstein & Caves, *PRL* **72** (1994) — quantum Fisher = Fubini-Study
-- Castellani, D'Auria & Fré, *NPB* **239** (1984) — CDF Killing-spinor equation
-- Duff, Nilsson & Pope, *arXiv:2502.07710* (2025) — KK supergravity review
-- Page & Pope, *Phys. Lett. B* **145** (1984) — $M^{mn}$ coset stability
-- Fabbri & Fré (1999) — $\text{AdS}_4 \times M^{1,1,1}$ spectrum
-- Connes, *CMP* **182** (1996) — spectral action principle
-- Wald, *PRD* **48** (1993) — black hole entropy formula
-- Ray & Singer, *Adv. Math.* **7** (1971) — analytic torsion
-
----
-
-## Consistency check
-
-After installation:
-
-```julia
-using FisherGeometrics
-check_all()
-```
-
-Expected output:
-```
-Running FisherGeometrics consistency checks...
-
-  Foundation      ✓  pass
-  Geometry        ✓  pass
-  Symmetry        ✓  pass
-  Dynamics        ✓  pass
-  Gravity         ✓  pass
-  Evolution       ✓  pass
-
-All checks passed ✓  —  Framework internally consistent.
-```
-
----
-
-*© 2026 Jan Bouwman · FisherGeometrics Framework*
-*Working document · Speculative theoretical research*
+for iter in 1:5
+    # Calculate regular and natural gradients
+    δS = FisherGeometrics.numerical_gradient(total_action, flat_current)
+    nat_δS = FisherGeometrics.natural_gradient(g, flat_current, basis, δS, rhos_init, M1, M2, J; α = α)
+    
+    # Take a step along the information geodesic
+    flat_step = flat_current - learning_rate * nat_δS
+    
+    # Quantum Projection (Enforce CPTP / valid state space)
+    flat_current = Float64[]
+    idx = 1
+    for k in 1:length(rhos_init)
+        mat = [flat_step[idx]                 flat_step[idx+2] + im*flat_step[idx+3];
+               flat_step[idx+2] - im*flat_step[idx+3]  flat_step[idx+1]]
+        mat = (mat + mat') / 2
+        vals, vecs = eigen(Hermitian(mat))
+        mat_projected = vecs * Diagonal(max.(vals, 1e-6)) * vecs'
+        mat_projected ./= tr(mat_projected)  # Strict unit trace correction
+        
+        push!(flat_current, real(mat_projected[1,1]), real(mat_projected[2,2]), 
+                            real(mat_projected[1,2]), imag(mat_projected[1,2]))
+        idx += 4
+    end
+    
+    # Monitor Action and Gradient Field Error
+    current_action = total_action(flat_current)
+    mean_error = sum(abs.(δS)) / length(δS)
+    @printf("Iteration %d | Action: %12.6f | Mean Field Error: %10.6f\n", iter, current_action, mean_error)
+end
