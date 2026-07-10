@@ -89,6 +89,18 @@ function metric_matrix(g::FisherMetric, ρ::Diagonal{T}, basis) where {T<:Real}
     return G
 end
 
+function numerical_gradient(f, x; h = 1e-5)
+    grad = zeros(eltype(x), length(x))
+    for i in 1:length(x)
+        x_plus = copy(x)
+        x_minus = copy(x)
+        x_plus[i] += h
+        x_minus[i] -= h
+        grad[i] = (f(x_plus) - f(x_minus)) / (2h)
+    end
+    return grad
+end
+
 """
     natural_gradient(g, flat_rhos, basis, δS, rhos_init, M1, M2, J; α=1e-4)
 
