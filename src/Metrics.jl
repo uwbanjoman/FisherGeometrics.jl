@@ -89,6 +89,64 @@ function metric_matrix(g::FisherMetric, ρ::Diagonal{T}, basis) where {T<:Real}
     return G
 end
 
+"""
+    natural_gradient(g, flat_rhos, basis, δS, rhos_init, M1, M2, J; α=1e-4)
+
+Berekent de Natural Gradient op de Bures-variëteit, geregulariseerd door 
+de Kaluza-Klein Casimir-operator H₀ van M^{1,1,1}.
+
+α is de koppelingsconstante die bepaalt hoe sterk de KK-massa de rimpelingen onderdrukt.
+"""
+function natural_gradient(g::FisherGeometrics.FisherMetric, flat_rhos, basis, δS, rhos_init, M1::Int, M2::Int, J::Real; α=1e-4)
+    n_states = length(rhos_init)
+    dim = 2
+    
+    # 1. Bereken de Kaluza-Klein regularisator vanuit M111Spectrum.jl
+    # H0 geeft de geometrische traagheid/massa van de harmonische modus
+    h0_weight = H0(M1, M2, J)
+    
+    # 2. Herbouw de actuele toestanden om de lokale metriek te bepalen
+    reconstructed = Vector{Matrix{ComplexF64}}(undef, n_states)
+    idx = 1
+    for k in 1:n_states
+        mat = zeros(ComplexF64, dim, dim)
+        mat[1,1] = flat_rhos[idx]
+        mat[2,2] = flat_rhos[idx+1]
+        mat[1,2] = flat_rhos[idx+2] + im*flat_rhos[idx+3]
+        mat[2,1] = flat_rhos[idx+2] - im*flat_rhos[idx+3]
+        reconstructed[k] = mat
+        idx += 4
+    end
+    
+    # 3. Corrigeer de gradiënt per toestand met de informatiemetriek én KK-massa
+    nat_grad = zero(δS)
+    idx = 1
+    for k in 1:n_states
+        # Bereken de lokale 3x3 Fisher-metriek G voor deze toestand
+        G = metric_matrix(g, reconstructed[k], basis)
+        
+        # Voeg de Kaluza-Klein regularisatie toe op de hoofddiagonaal van de metriek.
+        # Dit werkt als een effectieve massaterm (G_reg = G + α * H₀ * I)
+        G_reg = G + (α * h0_weight) * I
+        
+        # Bereken de robuuste inverse van de geregulariseerde metriek
+        Ginv = pinv(G_reg)
+        
+        # Pak de componenten van de standaard gradiënt voor deze toestand
+        δS_k = δS[idx:(idx+3)]
+        
+        nat_grad_k = zeros(4)
+        # Pas de geometrische/KK-correctie toe op de actieve su(2) richtingen
+        nat_grad_k[1:3] .= Ginv * δS_k[1:3]
+        nat_grad_k[4] = δS_k[4] # Imaginaire component blijft ongewijzigd
+        
+        nat_grad[idx:(idx+3)] .= nat_grad_k
+        idx += 4
+    end
+    
+    return nat_grad
+end
+
 function check_metric_normalization(n)
 
     ρ = maximally_mixed(n)
