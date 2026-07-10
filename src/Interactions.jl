@@ -49,6 +49,18 @@ function u1_generator()
 end
 
 """
+    u1_generator_3x3()
+
+Generator for U(1) symmetry (Electromagnetism) from CKM
+"""
+function u1_generator_3x3()
+    # Deze generator representeert de lading-structuur van de 3 generaties
+    return [1.0 0.0 0.0; 
+            0.0 1.0 0.0; 
+            0.0 0.0 1.0] 
+end
+
+"""
     su2_generator()
 
 Generator for SU(2) symmetry (Weak interaction / CKM-coupling).
