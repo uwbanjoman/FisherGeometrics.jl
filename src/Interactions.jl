@@ -19,7 +19,7 @@ Energy density of the non-commutative interaction.
 This measures the 'cost' of the field configuration in the informatic manifold.
 """
 function flux(ρ::AbstractMatrix, ops::AbstractMatrix)
-    δρ = interactie(ρ, ops)
+    δρ = interaction(ρ, ops)
     return real(tr(δρ * δρ))
 end
 
@@ -33,7 +33,7 @@ navigating the manifold defined in Dynamics.jl.
 function covariant_shift(ρ::AbstractMatrix, gauge_field::AbstractMatrix, dt::Float64)
     # The state evolves via the commutator, preserving unitary structure
     # ρ' = ρ - i * dt * [gauge_field, ρ]
-    return ρ - im * dt * interactie(ρ, gauge_field)
+    return ρ - im * dt * interaction(ρ, gauge_field)
 end
 
 # ── Symmetry Generators ───────────────────────────────────────
