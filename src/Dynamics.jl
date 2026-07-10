@@ -113,6 +113,19 @@ function cp_phase_identity()
     )
 end
 
+# ── geodesic acceleration ─────────────────────────────────────────
+
+"""
+    geodesic_acceleration(g, dg_dθ, velocity)
+
+Calculates the geodesic acceleration based on the metric g and its derivative.
+"""
+function geodesic_acceleration(g, dg_dθ, velocity)
+    # Γ is de Christoffel-symbolen component
+    Γ = 0.5 * (1.0 / g) * dg_dθ
+    return -Γ * (velocity^2)
+end
+
 # ── Consistency check ─────────────────────────────────────────
 
 function check_dynamics()
