@@ -22,7 +22,7 @@ statistical distinguishability of SU(2) density matrices ρ via `FisherMetric()`
 Instead of a predefined spacetime metric, we construct the Bures/Fisher information
 metric tensor G directly over SU(2) density matrices ρ using a Gell-Mann tangent basis:
 
-$$G_{ab}(\rho) = 2 \,\text{Re}\!\left[\operatorname{tr}\!\left(\partial_a\rho \cdot \partial_b\rho\right)\right]$$
+$$G_{ab}(\rho) = 2 \,\text{Re}\!\left[\text{tr}\!\left(\partial_a\rho \cdot \partial_b\rho\right)\right]$$
 
 ### 1.2 The Cosmic Regulator: M¹·¹·¹ Sasaki-Einstein Spectroscopy
 
@@ -75,7 +75,7 @@ four core mathematical steps:
 2. **Gell-Mann Projection:** Maps the flat matrix gradient into the covariant
    tangent space of the information manifold via the trace inner product:
 
-   $$h_a = \operatorname{tr}\!\left(\frac{\partial S}{\partial\rho} \cdot \text{basis}_a\right)$$
+   $$h_a = \text{tr}\!\left(\frac{\partial S}{\partial\rho} \cdot \text{basis}_a\right)$$
 
 3. **Natural Gradient & KK-Damping:** Transforms the covariant gradient into
    a contravariant update vector using the inverse of the regularized Fisher metric:
@@ -109,7 +109,6 @@ The main package exports the following essential functions for the optimization 
   the volume element dV = |det G| Δ.
 - **`natural_gradient(g, flat_rhos, basis, δS, rhos_init, M1, M2, J; α)`** —
   Executes the coordinate-aligned, M¹·¹·¹-dampened natural gradient step.
-
 ---
 
 ## 4. Usage Example
