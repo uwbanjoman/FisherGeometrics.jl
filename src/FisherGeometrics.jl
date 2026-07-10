@@ -28,6 +28,7 @@ include(joinpath(@__DIR__, "MetricDerivative.jl"))
 include(joinpath(@__DIR__, "Connection.jl"))
 include(joinpath(@__DIR__, "Curvature.jl"))
 include(joinpath(@__DIR__, "Actions.jl"))
+include(joinpath(@__DIR__, "Interactions.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
 
@@ -108,6 +109,9 @@ export riemann, ricci, scalar_curvature
 
 # Actions.jl
 export information_action
+
+# Interactions.jl
+export flux
 
 
 # ── Full scoreboard ───────────────────────────────────────────
