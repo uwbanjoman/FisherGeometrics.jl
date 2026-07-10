@@ -173,6 +173,28 @@ function natural_gradient(g::FisherGeometrics.FisherMetric, flat_rhos, basis, δ
     return nat_grad
 end
 
+"""
+    grad_fisher_metric(θ::Vector)
+
+Calculates the gradient of the Fisher Information Metric 
+with respect to the parameter vector θ (the CKM angles).
+"""
+function grad_fisher_metric(θ::Vector)
+    # Gebruik centrale differentie om de gradiënt te benaderen
+    # als je geen analytische afgeleide hebt.
+    h = 1e-6
+    n = length(θ)
+    grad = similar(θ, Matrix{Float64})
+    
+    for i in 1:n
+        θ_plus = copy(θ); θ_plus[i] += h
+        θ_minus = copy(θ); θ_minus[i] -= h
+        grad[i] = (FisherMetric(θ_plus) - FisherMetric(θ_minus)) / (2h)
+    end
+    
+    return grad
+end
+
 function check_metric_normalization(n)
 
     ρ = maximally_mixed(n)
