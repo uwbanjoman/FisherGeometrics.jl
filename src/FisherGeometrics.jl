@@ -93,7 +93,7 @@ export maximally_mixed, is_density_matrix
 
 # Metrics.jl
 export FisherMetric
-export metric, metric_matrix
+export metric, metric_matrix, natural_gradient
 export check_metric_normalization
 
 # MetricDerivative.jl
