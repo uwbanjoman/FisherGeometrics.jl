@@ -13,6 +13,22 @@ function interaction(ρ::AbstractMatrix, ops::AbstractMatrix)
 end
 
 """
+    geometric_acceleration(ρ::AbstractMatrix, ops::AbstractMatrix, v::Float64)
+
+The resulting acceleration from the manifold curvature and the field response.
+"""
+function geometric_acceleration(ρ::AbstractMatrix, ops::AbstractMatrix, v::Float64)
+    # Geodesic component from the metric
+    a_g = geodesic_acceleration(g, dg_dθ, v)
+    
+    # Interaction component (field response)
+    # The flux gradient determines the 'push' in the manifold
+    f_flux = -1.0 * grad_flux(ρ, ops)
+    
+    return a_g + f_flux
+end
+
+"""
     flux(ρ, ops)
 
 Energy density of the non-commutative interaction.
