@@ -112,7 +112,7 @@ export information_action
 
 # Interactions.jl
 export interaction, flux, covariant_shift, u1_generator, u1_generator_3x3
-export su2_generator, check_interactions
+export su2_generator, u1_quark_generator, check_interactions
 
 
 # ── Full scoreboard ───────────────────────────────────────────
