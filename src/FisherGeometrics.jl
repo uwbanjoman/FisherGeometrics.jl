@@ -58,7 +58,7 @@ export check_anomaly_cancellation
 export alpha_em, alpha_em_inv
 export mass_hierarchy, mass_ratios
 export ckm_angles, ckm_matrix, ckm_wolfenstein
-export jarlskog, cp_phase_identity
+export jarlskog, cp_phase_identity, geodesic_acceleration
 
 # Gravity
 export information_resistance
