@@ -39,7 +39,7 @@ export check_geometry, check_symmetry, check_dynamics, check_gravity, check_evol
 # Foundation
 export τ, κ_hol, φ, λ_W, A_Wolf, δ_CP, M_Pl_GeV, M_c_GeV, M_KK_GeV
 export quantum_fisher, fisher_tensor, fubini_study_metric
-export gellmann_basis, pauli_basis, vacuum_state, pure_state
+export gellmann_basis, pauli_basis, vacuum_state, pure_state, gibbs_state
 
 # Geometry
 export spectrum_K, dirac_spectrum_K, kk_masses
