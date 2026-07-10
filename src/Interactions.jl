@@ -69,6 +69,18 @@ function su2_generator()
     return [0.0 1.0; 1.0 0.0]
 end
 
+function u1_quark_generator()
+    # Ladingen voor down, strange, bottom quarks: -1/3, -1/3, -1/3
+    # Als we de CKM-matrix laten werken op de up-type quarks (2/3, 2/3, 2/3), 
+    # dan krijgen we ook 0.
+    
+    # Gebruik een generator die de generaties onderscheidt, 
+    # bijvoorbeeld op basis van hun massa-hiërarchie (uit Dynamics.jl):
+    return [1.0 0.0 0.0; 
+            0.0 2.0 0.0; 
+            0.0 0.0 3.0] # Een 'diagonaal veld' dat generaties een andere 'waarde' geeft
+end
+
 # ── Interaction consistency ───────────────────────────────────
 
 function check_interactions()
