@@ -169,3 +169,29 @@ function pure_state(ψ::AbstractVector)
     ψn = ComplexF64.(ψ) / norm(ψ)
     return ψn * ψn'
 end
+
+"""
+    gibbs_state(M1::Int, M2::Int, J::Real, β::Real)
+
+Genereert een 2x2 Gibbs-toestand (dichtheidsmatrix) waarbij de energiekloof 
+wordt geschaald door de Kaluza-Klein Casimir-massa H₀(M₁, M₂, J).
+β is de inverse temperatuur (1/T).
+"""
+function gibbs_state(M1::Int, M2::Int, J::Real, β::Real)
+    # 1. Bepaal de effectieve energie/massa van de KK-modus
+    energy_scale = H0(M1, M2, J)
+    
+    # 2. Bouw een effectieve 2x2 Hamiltoniaan voor het su(2) subsysteem.
+    # We gebruiken een standaard opsplitsing (bijv. Pauli-Z) waarbij de 
+    # energiekloof evenredig is met de KK-massa.
+    H = ComplexF64[energy_scale   0.0;
+                   0.0           -energy_scale]
+    
+    # 3. Bereken de ongenormaliseerde Boltzmann-factor via de matrix-exponentieel
+    boltzmann_matrix = exp(-β * H)
+    
+    # 4. Normaliseer door het spoor (tr) om een geldige dichtheidsmatrix te krijgen
+    ρ_gibbs = boltzmann_matrix / tr(boltzmann_matrix)
+    
+    return ρ_gibbs
+end
