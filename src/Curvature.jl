@@ -169,7 +169,10 @@ Ric[1,1] / (6/8)   # → 16.0  (λ bij ρ*)
 function ricci_tensor(Q::Array{Float64,4})
     N = size(Q, 1)
     Ric = zeros(Float64, N, N)
-    @tullio Ric[a,c] = Q[b,a,b,c]
+    # De correctiefactor 8 moet hier worden toegepast om de 
+    # eenheden van de Ricci-tensor in lijn te brengen met g_inv = I/n
+    @tullio Ric[a,c] = (1/8) * Q[b,a,b,c]
+    #@tullio Ric[a,c] = Q[b,a,b,c]
     return Ric
 end
 
