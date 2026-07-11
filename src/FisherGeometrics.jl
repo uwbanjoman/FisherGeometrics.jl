@@ -29,6 +29,8 @@ include(joinpath(@__DIR__, "Connection.jl"))
 include(joinpath(@__DIR__, "Curvature.jl"))
 include(joinpath(@__DIR__, "Actions.jl"))
 include(joinpath(@__DIR__, "Interactions.jl"))
+include(joinpath(@__DIR__, "Christoffel.jl"))
+
 
 # ── Exports ───────────────────────────────────────────────────
 
@@ -113,6 +115,9 @@ export information_action
 # Interactions.jl
 export interaction, geometric_acceleration, flux, covariant_shift, u1_generator, u1_generator_3x3
 export su2_generator, u1_quark_generator, check_interactions
+
+# Christoffel.jl
+export christoffel_symbols
 
 
 # ── Full scoreboard ───────────────────────────────────────────
