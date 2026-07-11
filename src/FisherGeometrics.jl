@@ -29,7 +29,7 @@ include(joinpath(@__DIR__, "Connection.jl"))
 include(joinpath(@__DIR__, "Curvature.jl"))
 include(joinpath(@__DIR__, "Actions.jl"))
 include(joinpath(@__DIR__, "Interactions.jl"))
-include(joinpath(@__DIR__, "RiemannTensor.jl"))
+#include(joinpath(@__DIR__, "RiemannTensor.jl"))
 
 
 # ── Exports ───────────────────────────────────────────────────
@@ -107,6 +107,10 @@ export ddmetric, ddmetric_tensor
 export christoffel
 
 # Curvature.jl
+export d_tensor, christoffel_vacuum, K_quad, ricci_scalar_quad
+export riemann_quadratic, ricci_tensor, ricci_scalar, einstein_tensor
+export bures_einstein
+# these may be redundant 
 export riemann, ricci, scalar_curvature
 
 # Actions.jl
@@ -120,7 +124,7 @@ export su2_generator, u1_quark_generator, check_interactions
 #export christoffel_symbols
 
 # RiemannTensor.jl
-export christoffel_symbols, riemann_tensor, ricci_tensor, ricci_scalar, compute_curvature
+#export christoffel_symbols, riemann_tensor, ricci_tensor, ricci_scalar, compute_curvature
 
 # ── Full scoreboard ───────────────────────────────────────────
 
