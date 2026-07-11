@@ -195,6 +195,12 @@ end
 T  = gellmann_basis(6)
 FG = bures_einstein(T)
 
-FG.S_F   # 560.0  — scalaire Fisher-curvature
-FG.λ     # 16.0   — Ricci-eigenvalue  
-FG.Λ     # 264.0  - kosmologische constante
+bures_einstein(T) returns a NamedTuple with:
+    .d      d-symbol tensor (N×N×N)
+    .Γ      Christoffel-symbols (N×N×N)
+    .Q      Riemann ΓΓ-contribution (N×N×N×N)
+    .Ric    Ricci-tensor (N×N)
+    .S_F    Scalar curvature (Float64, expect: 560)
+    .G      Einstein-tensor (N×N)
+    .λ      Ricci-eigenvalue (Float64, expect: 16)
+    .Λ      cosmological constant (Float64, expect: 264)
