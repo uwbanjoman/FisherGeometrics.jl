@@ -249,8 +249,8 @@ FG.Λ       # → 264.0
 function bures_einstein(T::Vector; n::Int=6)
     N   = length(T)
     g   = (n/8) * Matrix{Float64}(I, N, N)
-    #g_inv = (8/n) * Matrix{Float64}(I, N, N)
-    g_inv = (1/8) * (8/n) * Matrix{Float64}(I, N, N) # == (1/n) * I
+    g_inv = (8/n) * Matrix{Float64}(I, N, N)
+    #g_inv = (1/8) * (8/n) * Matrix{Float64}(I, N, N) # == (1/n) * I
  
     d   = d_tensor(T)
     Γ   = christoffel_vacuum(d, n)
