@@ -12,3 +12,8 @@ function rho_KK(R::Real; n::Int=6)
     p0=1.0; p1=exp(-16/R); p2=exp(-144/R); Z=p0+3*p1+2*p2
     return Matrix{ComplexF64}(Diagonal([p0,p1,p1,p1,p2,p2]./Z))
 end
+
+function entropy(ρ::Diagonal)
+    p = ρ.diag
+    return -sum(x > 0 ? x * log(x) : 0.0 for x in p)
+end
