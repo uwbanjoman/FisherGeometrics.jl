@@ -184,6 +184,7 @@ for iter in 1:5
     end
     
     # Monitor Action and Gradient Field Error
+    # the 5 iterations may take some seconds to run
     current_action = total_action(flat_current)
     mean_error = sum(abs.(δS)) / length(δS)
     @printf("Iteration %d | Action: %12.6f | Mean Field Error: %10.6f\n", iter, current_action, mean_error)
