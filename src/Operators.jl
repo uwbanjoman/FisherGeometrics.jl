@@ -96,23 +96,6 @@ end
 # Inverse Jordan operator
 # ============================================================
 
-# 1. Specifieke, geoptimaliseerde versie voor Diagonal matrices
-function Lρ_inv(ρ::Diagonal{T}, X::AbstractMatrix{C}; tol=1e-12) where {T<:Real, C<:Number}
-    n = size(ρ, 1)
-    L = zeros(C, n, n)
-    diag_ρ = ρ.diag
-    @inbounds for j in 1:n
-        λ_j = diag_ρ[j]
-        for i in 1:n
-            denom = diag_ρ[i] + λ_j
-            if denom > tol
-                L[i, j] = 2 * X[i, j] / denom
-            end
-        end
-    end
-    return L
-end
-
 """
     Lρ_inv(ρ::Diagonal, X::AbstractMatrix; tol=1e-12)
 
