@@ -181,7 +181,8 @@ function ddmetric(::FisherMetric,
                     Lρ_inv(ρ,
                         jordan(K, LY))))
 
-    return real(tr(X * (T1 + T2))) / 2
+    #return real(tr(X * (T1 + T2))) / 2
+    return real(tr(X * (T1 + T2)))
 
 end
 
