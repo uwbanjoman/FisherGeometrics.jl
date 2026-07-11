@@ -190,7 +190,8 @@ for iter in 1:5
     @printf("Iteration %d | Action: %12.6f | Mean Field Error: %10.6f\n", iter, current_action, mean_error)
 end
 
-# 4. from the postulaat gμν=Fμν/ρ0g_{\mu\nu} = \mathcal{F}_{\mu\nu}/\rho_0 gμν​=Fμν​/ρ0​ to the Einstein-equation.
+# 4. from the postulate $g_{\mu\nu} = \frac{\mathcal{F}_{\mu\nu}}{\rho_0}$ ​
+# to a Einstein Geometry induced by the Bures metric
 T  = gellmann_basis(6)
 FG = bures_einstein(T)
 
