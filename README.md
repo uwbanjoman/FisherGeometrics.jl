@@ -195,12 +195,12 @@ end
 T  = gellmann_basis(6)
 FG = bures_einstein(T)
 
-bures_einstein(T) returns a NamedTuple with:
-    .d      d-symbol tensor (N×N×N)
-    .Γ      Christoffel-symbols (N×N×N)
-    .Q      Riemann ΓΓ-contribution (N×N×N×N)
-    .Ric    Ricci-tensor (N×N)
-    .S_F    Scalar curvature (Float64, expect: 560)
-    .G      Einstein-tensor (N×N)
-    .λ      Ricci-eigenvalue (Float64, expect: 16)
-    .Λ      cosmological constant (Float64, expect: 264)
+# bures_einstein(T) returns a NamedTuple with:
+#    .d      d-symbol tensor (N×N×N)
+#    .Γ      Christoffel-symbols (N×N×N)
+#    .Q      Riemann ΓΓ-contribution (N×N×N×N)
+#    .Ric    Ricci-tensor (N×N)
+#    .S_F    Scalar curvature (Float64, expect: 560)
+#    .G      Einstein-tensor (N×N)
+#    .λ      Ricci-eigenvalue (Float64, expect: 16)
+#    .Λ      cosmological constant (Float64, expect: 264)
