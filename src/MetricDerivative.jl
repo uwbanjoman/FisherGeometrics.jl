@@ -61,10 +61,6 @@ The tensor `dg` is symmetric in its first two indices.
 function metric_derivatives(g::FisherMetric,
                             ρ::AbstractMatrix,
                             basis)
-    if isdiag(ρ)
-        return metric_derivatives(g, Diagonal(ρ), basis)
-    end
-
     n = length(basis)
 
     dg = zeros(Float64, n, n, n)
