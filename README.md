@@ -189,3 +189,11 @@ for iter in 1:5
     mean_error = sum(abs.(δS)) / length(δS)
     @printf("Iteration %d | Action: %12.6f | Mean Field Error: %10.6f\n", iter, current_action, mean_error)
 end
+
+# 4. from the postulaat gμν=Fμν/ρ0g_{\mu\nu} = \mathcal{F}_{\mu\nu}/\rho_0 gμν​=Fμν​/ρ0​ to the Einstein-equation.
+T  = gellmann_basis(6)
+FG = bures_einstein(T)
+
+FG.S_F   # 560.0  — scalaire Fisher-curvature
+FG.λ     # 16.0   — Ricci-eigenvalue  
+FG.Λ     # 264.0  - kosmologische constante
