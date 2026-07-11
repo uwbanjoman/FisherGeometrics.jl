@@ -37,7 +37,8 @@ function dmetric(::FisherMetric,
     #
     # D(L⁻¹)=−L⁻¹(DL)L⁻¹
     #
-    return -real(tr(X * term))/2
+    #return -real(tr(X * term))/2
+    return -real(tr(X * term))
 
 end
 
