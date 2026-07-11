@@ -191,7 +191,7 @@ for iter in 1:5
 end
 
 # 4. from the postulate $g_{\mu\nu} = \frac{\mathcal{F}_{\mu\nu}}{\rho_0}$ ​
-# to a Einstein Geometry, induced by the Bures metric
+#    to a Einstein Geometry, induced by the Bures metric
 T  = gellmann_basis(6)
 FG = bures_einstein(T)
 
