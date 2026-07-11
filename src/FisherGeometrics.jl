@@ -11,6 +11,7 @@ module FisherGeometrics
 
 using QuantumFisher
 using LinearAlgebra
+using Tullio
 using Printf
 
 include(joinpath(@__DIR__, "Foundation.jl"))
