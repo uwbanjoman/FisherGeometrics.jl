@@ -208,11 +208,7 @@ The tensor is symmetric in
 function ddmetric_tensor(g::FisherMetric,
                          ρ::AbstractMatrix,
                          basis)
-    if isdiag(ρ)
-        return ddmetric_tensor(g, Diagonal(ρ), basis)
-    end
     n = length(basis)
-
     T = zeros(Float64, n, n, n, n)
 
     for i in 1:n
