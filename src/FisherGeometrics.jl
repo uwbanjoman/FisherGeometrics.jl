@@ -29,7 +29,7 @@ include(joinpath(@__DIR__, "Connection.jl"))
 include(joinpath(@__DIR__, "Curvature.jl"))
 include(joinpath(@__DIR__, "Actions.jl"))
 include(joinpath(@__DIR__, "Interactions.jl"))
-include(joinpath(@__DIR__, "Christoffel.jl"))
+include(joinpath(@__DIR__, "RiemannTensor.jl"))
 
 
 # ── Exports ───────────────────────────────────────────────────
@@ -117,8 +117,10 @@ export interaction, geometric_acceleration, flux, covariant_shift, u1_generator,
 export su2_generator, u1_quark_generator, check_interactions
 
 # Christoffel.jl
-export christoffel_symbols
+#export christoffel_symbols
 
+# RiemannTensor.jl
+export christoffel_symbols, riemann_tensor, ricci_tensor, ricci_scalar, compute_curvature
 
 # ── Full scoreboard ───────────────────────────────────────────
 
