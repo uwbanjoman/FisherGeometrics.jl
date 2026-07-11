@@ -152,6 +152,61 @@ function pauli_basis()
 end
 
 """
+    su_basis(n)
+
+Return an orthonormal Hermitian basis of the Lie algebra su(n).
+
+The basis consists of
+
+- symmetric generators,
+- antisymmetric generators,
+- diagonal (Cartan) generators.
+
+The normalization satisfies
+
+    tr(Tᵢ*Tⱼ) = 1/2 δᵢⱼ
+
+so that the basis contains n²−1 generators.
+"""
+function su_basis(n::Int)
+
+    T = Matrix{ComplexF64}[]
+
+    # Symmetric generators
+    for j in 1:n, k in j+1:n
+        M = zeros(ComplexF64,n,n)
+        M[j,k] = 0.5
+        M[k,j] = 0.5
+        push!(T,M)
+    end
+
+    # Antisymmetric generators
+    for j in 1:n, k in j+1:n
+        M = zeros(ComplexF64,n,n)
+        M[j,k] = -0.5im
+        M[k,j] =  0.5im
+        push!(T,M)
+    end
+
+    # Cartan generators
+    for l in 1:n-1
+        M = zeros(ComplexF64,n,n)
+        α = inv(sqrt(2l*(l+1)))
+
+        for j in 1:l
+            M[j,j] = α
+        end
+
+        M[l+1,l+1] = -l*α
+
+        push!(T,M)
+    end
+
+    return T
+
+end
+
+"""
     vacuum_state() → Matrix{ComplexF64}
 
 Vacuum density matrix ρ̂₀ = I/6 on ℂ⁶ = ℂ³⊗ℂ².
