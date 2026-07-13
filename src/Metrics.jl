@@ -27,7 +27,8 @@ function metric(::FisherMetric,
 
     LY = Lρ_inv(ρ, Y)
 
-    return real(tr(X * LY)) / 2
+    #return real(tr(X * LY)) / 2
+    return real(tr(X * LY)) / 4
 
 end
 
