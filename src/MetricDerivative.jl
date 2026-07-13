@@ -38,7 +38,7 @@ function dmetric(::FisherMetric,
     # D(L⁻¹)=−L⁻¹(DL)L⁻¹
     #
     #return -real(tr(X * term))/2
-    return -real(tr(X * term))
+    return -real(tr(X * term))/4
 
 end
 
@@ -182,7 +182,7 @@ function ddmetric(::FisherMetric,
                         jordan(K, LY))))
 
     #return real(tr(X * (T1 + T2))) / 2
-    return real(tr(X * (T1 + T2)))
+    return real(tr(X * (T1 + T2)))/4
 
 end
 
