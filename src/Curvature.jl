@@ -1,28 +1,5 @@
 # src/Curvature.jl
 
-export su_basis
-
-"""
-    su_basis(n) -> Vector{Matrix{ComplexF64}}
-
-𝔰𝔲(n) generatoren, genormeerd als Tr(TₐTᵦ) = δₐᵦ/2.
-Geeft n²−1 matrices terug.
-"""
-function su_basis(n::Int)
-    T = Matrix{ComplexF64}[]
-    for j in 1:n, k in j+1:n
-        M = zeros(ComplexF64,n,n); M[j,k]=M[k,j]=0.5; push!(T,M)
-    end
-    for j in 1:n, k in j+1:n
-        M = zeros(ComplexF64,n,n); M[j,k]=-0.5im; M[k,j]=0.5im; push!(T,M)
-    end
-    for l in 1:n-1
-        M = zeros(ComplexF64,n,n); nrm=1/sqrt(2l*(l+1))
-        for j in 1:l; M[j,j]=nrm; end; M[l+1,l+1]=-l*nrm; push!(T,M)
-    end
-    return T
-end
-
 """
     d_tensor(T) -> Array{Float64,3}
  
