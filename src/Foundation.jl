@@ -233,22 +233,20 @@ wordt geschaald door de Kaluza-Klein Casimir-massa H₀(M₁, M₂, J).
 β is de inverse temperatuur (1/T).
 """
 function gibbs_state(M1::Int, M2::Int, J::Real, β::Real)
-    # 1. Bepaal de effectieve energie/massa van de KK-modus
     energy_scale = H0(M1, M2, J)
+    H = ComplexF64[energy_scale 0.0; 0.0 -energy_scale]
     
-    # 2. Bouw een effectieve 2x2 Hamiltoniaan voor het su(2) subsysteem.
-    # We gebruiken een standaard opsplitsing (bijv. Pauli-Z) waarbij de 
-    # energiekloof evenredig is met de KK-massa.
-    H = ComplexF64[energy_scale   0.0;
-                   0.0           -energy_scale]
+    # Gebruik de 'shift' truc om numerieke overflow te voorkomen
+    # We trekken de grootste waarde eraf om de exponenten in een werkbaar bereik te houden
+    eig_vals = [energy_scale, -energy_scale]
+    max_eig = maximum(eig_vals)
     
-    # 3. Bereken de ongenormaliseerde Boltzmann-factor via de matrix-exponentieel
-    boltzmann_matrix = exp(-β * H)
+    # Shift de matrix: exp(-β * (H - max_eig * I)) / Z_shifted
+    # Dit is wiskundig equivalent aan de oorspronkelijke ρ
+    shifted_H = H - (max_eig * I)
+    boltzmann_matrix = exp(-β * shifted_H)
     
-    # 4. Normaliseer door het spoor (tr) om een geldige dichtheidsmatrix te krijgen
-    ρ_gibbs = boltzmann_matrix / tr(boltzmann_matrix)
-    
-    return ρ_gibbs
+    return boltzmann_matrix / tr(boltzmann_matrix)
 end
 
 function gibbs_state_expanded(M1, M2, J, β)
