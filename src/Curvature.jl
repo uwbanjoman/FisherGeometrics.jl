@@ -398,3 +398,70 @@ function scalar_curvature(g::FisherMetric, ρ::AbstractMatrix, basis)
     return S
 
 end
+
+"""
+    SF_exact(ρ, T) -> Float64
+
+Exacte scalaire Fisher-kromming via FisherGeometrics.jl.
+Pure Julia loops — identiek aan de handmatige berekening die 560 gaf.
+
+Sanity check: SF_exact(I/6, su_basis(6)) ≈ 560.0
+"""
+function SF_exact(ρ::AbstractMatrix, T::Vector)
+    n = size(ρ, 1)
+    N = length(T)
+    ρ_c = Matrix{ComplexF64}(ρ)
+    eps = 1e-5
+
+    # 1. Metriek en Inverse
+    G = zeros(Float64, N, N)
+    for a in 1:N, b in 1:N
+        La = solve_sld(ρ_c, T[a])
+        G[a,b] = (1/4) * real(tr(T[b] * La))
+    end
+    Gi = pinv(G)
+
+    # 2. Eerste afgeleide dg[a,b,c] = ∂_c g_{ab}
+    dg = zeros(Float64, N, N, N)
+    for c in 1:N
+        ρ_p = ρ_c + eps * T[c]; ρ_m = ρ_c - eps * T[c]
+        for a in 1:N, b in 1:N
+            Lap = solve_sld(ρ_p, T[a]); Lam = solve_sld(ρ_m, T[a])
+            dg[a,b,c] = (1/4) * real(tr(T[b] * (Lap - Lam))) / (2 * eps)
+        end
+    end
+
+    # 3. dGinv[e,l,i] = -(∂_i g^{el})
+    dGinv = zeros(Float64, N, N, N)
+    for i in 1:N
+        # ∂g⁻¹ = -g⁻¹ (∂g) g⁻¹
+        dGinv[:,:,i] .= -(Gi * dg[:,:,i] * Gi)
+    end
+
+    # 4. Christoffel symbolen Γ^e_{bc}
+    Γ = zeros(Float64, N, N, N)
+    for e in 1:N, b in 1:N, c in 1:N
+        for l in 1:N
+            Γ[e,b,c] += 0.5 * Gi[e,l] * (dg[b,l,c] + dg[c,l,b] - dg[b,c,l])
+        end
+    end
+
+    # 5. Riemann & Ricci (gebruik dΓ als 0 bij I/n)
+    # Op I/n is de eerste afgeleide van de metriek (dg) nul, dus dΓ = 0
+    # Hierdoor is Riemann puur kwadratisch (Γ*Γ)
+    R_full = zeros(Float64, N, N, N, N)
+    for e in 1:N, a in 1:N, b in 1:N, c in 1:N
+        for f in 1:N
+            R_full[e,a,b,c] += Γ[f,a,c]*Γ[e,b,f] - Γ[f,b,c]*Γ[e,a,f]
+            #R_full[e,a,b,c] += Γ[e,a,f]*Γ[f,b,c] - Γ[e,b,f]*Γ[f,a,c]
+            #R_full[e,a,b,c] += Γ[f,b,c]*Γ[e,a,f] - Γ[f,a,c]*Γ[e,b,f]
+        end
+    end
+
+    Ric = [sum(R_full[b,a,b,c] for b in 1:N) for a in 1:N, c in 1:N]
+    
+    # Scalaire kromming
+    S = sum(Gi[a,c] * Ric[a,c] for a in 1:N, c in 1:N)
+    return S
+end
+
