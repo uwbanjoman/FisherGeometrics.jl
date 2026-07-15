@@ -31,6 +31,7 @@ include(joinpath(@__DIR__, "Curvature.jl"))
 include(joinpath(@__DIR__, "Actions.jl"))
 include(joinpath(@__DIR__, "Interactions.jl"))
 include(joinpath(@__DIR__, "States.jl"))
+include(joinpath(@__DIR__, "Analysis.jl"))
 #include(joinpath(@__DIR__, "RiemannTensor.jl"))
 
 
@@ -125,6 +126,9 @@ export su2_generator, u1_quark_generator, check_interactions
 
 # States.jl
 export rho_KK, rho_complex_KK, entropy
+
+# Analysis.jl
+export compute_I_R_exact
 
 # Christoffel.jl
 #export christoffel_symbols
