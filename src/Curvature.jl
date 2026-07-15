@@ -497,3 +497,10 @@ function calculate_local_curvature(ρ::Matrix{ComplexF64})
     
     return real(K)
 end
+
+function solve_sld(ρ::AbstractMatrix, Y::AbstractMatrix; tol=1e-12)
+    n = size(ρ, 1)
+    A = kron(I(n), ρ) + kron(transpose(ρ), I(n))
+    L = reshape(pinv(A; atol=tol) * 2*vec(ComplexF64.(Y)), n, n)
+    return (L + L') / 2
+end
