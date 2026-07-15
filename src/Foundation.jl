@@ -250,3 +250,11 @@ function gibbs_state(M1::Int, M2::Int, J::Real, β::Real)
     
     return ρ_gibbs
 end
+
+function gibbs_state_expanded(M1, M2, J, β)
+    ρ_2x2 = gibbs_state(M1, M2, J, β)
+    # Plaats de 2x2 toestand in een grotere 6x6 nul-matrix
+    ρ_6x6 = zeros(ComplexF64, 6, 6)
+    ρ_6x6[1:2, 1:2] = ρ_2x2
+    return ρ_6x6
+end
