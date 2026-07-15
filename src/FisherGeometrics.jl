@@ -113,7 +113,7 @@ export christoffel
 # Curvature.jl
 export d_tensor, christoffel_vacuum, K_quad, ricci_scalar_quad
 export riemann_quadratic, ricci_tensor, ricci_scalar, einstein_tensor
-export bures_einstein, D2_KK, SF_exact
+export bures_einstein, D2_KK, SF_exact, calculate_local_curvature
 # these may be redundant 
 export riemann, ricci, scalar_curvature
 
