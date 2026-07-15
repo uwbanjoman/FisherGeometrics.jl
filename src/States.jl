@@ -13,6 +13,25 @@ function rho_KK(R::Real; n::Int=6)
     return Matrix{ComplexF64}(Diagonal([p0,p1,p1,p1,p2,p2]./Z))
 end
 
+function rho_complex_KK(R::Real, phi::Real)
+    # Definieer de parameters die eerst ontbraken
+    p0 = 1.0
+    p1 = exp(-16/R)
+    p2 = exp(-144/R)
+    Z  = p0 + 3*p1 + 2*p2
+
+    # Maak de basis-matrix
+    ρ = Matrix{ComplexF64}(Diagonal([p0, p1, p1, p1, p2, p2]./Z))
+
+    # Voeg fase-draai toe
+    val = 0.05 * exp(im * phi)
+    ρ[1, 2] = val
+    ρ[2, 1] = conj(val)
+
+    # Normaliseer
+    return ρ / tr(ρ)
+end
+
 function entropy(ρ::Diagonal)
     p = ρ.diag
     return -sum(x > 0 ? x * log(x) : 0.0 for x in p)
