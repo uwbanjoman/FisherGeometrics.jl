@@ -399,6 +399,11 @@ function scalar_curvature(g::FisherMetric, ρ::AbstractMatrix, basis)
 
 end
 
+function D2_KK(R::Real; n::Int=6)
+    p1=exp(-16/R); p2=exp(-144/R); Z=1+3*p1+2*p2
+    return max(2*(1-(1/sqrt(n*Z))*(1+3*exp(-8/R)+2*exp(-72/R))),0.0)
+end
+
 """
     SF_exact(ρ, T) -> Float64
 
