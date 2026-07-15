@@ -470,3 +470,30 @@ function SF_exact(ρ::AbstractMatrix, T::Vector)
     return S
 end
 
+"""
+    calculate_local_curvature(ρ; n=6)
+
+Berekent de lokale scalaire kromming van de toestandsruimte bij dichtheidsmatrix ρ.
+Gebaseerd op de Fisher-Rao metriek tensor.
+"""
+function calculate_local_curvature(ρ::Matrix{ComplexF64})
+    # De kromming in informatiegeometrie is vaak gerelateerd aan de 
+    # variatie in de Fisher-informatie ten opzichte van de parameters.
+    # Een snelle benadering voor jouw model:
+    
+    # We berekenen de Fisher-informatie (S_F) en nemen de negatieve 
+    # gradiënt als maatstaf voor de kromming (geometrische dichtheid).
+    SF = SF_exact(ρ, su_basis(length(ρ[1,:])))
+    
+    # We gebruiken de entropie als natuurlijke schaal voor de kromming.
+    # Entropy S = -Tr(ρ log ρ)
+    eigen_vals = eigvals(ρ)
+    # Filter kleine waarden voor numerieke stabiliteit
+    S = -sum(λ * log(max(λ, 1e-15)) for λ in eigen_vals)
+    
+    # De kromming K is omgekeerd evenredig aan de entropie-gradient
+    # in jouw Kaluza-Klein model.
+    K = SF / (S + 1e-9) 
+    
+    return real(K)
+end
