@@ -45,11 +45,12 @@ function print_I_R_summary(results::Vector{<:NamedTuple})
     @printf("Minimum I(R) bij R* ≈ %.1f (I = %.3f)\n", results[idx].R, results[idx].I)
 end
 
-function run_fase_test(R_range, β)
+function run_fase_test(R_range, β, M1, M2, J)
     phases = Float64[]
     for i in 1:length(R_range)-1
         R1, R2 = R_range[i], R_range[i+1]
         
+        # Gebruik de doorgegeven M1, M2, J
         ρ1 = gibbs_state_expanded(M1, M2, J/R1, β)
         ρ2 = gibbs_state_expanded(M1, M2, J/R2, β)
         
