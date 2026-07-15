@@ -1,4 +1,4 @@
-# src/analysis.jl
+# src/Analysis.jl
 
 """
     compute_I_R_exact(R_values; n=6)
