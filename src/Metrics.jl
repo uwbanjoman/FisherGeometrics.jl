@@ -174,7 +174,6 @@ function natural_gradient(g::FisherGeometrics.FisherMetric, flat_rhos, basis, δ
     return nat_grad
 end
 
-
 function check_metric_normalization(n)
 
     ρ = maximally_mixed(n)
