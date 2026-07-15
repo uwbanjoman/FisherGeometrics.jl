@@ -44,3 +44,33 @@ function print_I_R_summary(results::Vector{<:NamedTuple})
     println("─"^60)
     @printf("Minimum I(R) bij R* ≈ %.1f (I = %.3f)\n", results[idx].R, results[idx].I)
 end
+
+function run_fase_test(R_range, β)
+    phases = Float64[]
+    for i in 1:length(R_range)-1
+        R1, R2 = R_range[i], R_range[i+1]
+        
+        ρ1 = gibbs_state_expanded(M1, M2, J/R1, β)
+        ρ2 = gibbs_state_expanded(M1, M2, J/R2, β)
+        
+        # FIX: Laat de rotatie afhangen van R
+        # Hoe sterker de kromming (kleinere R), hoe sterker de fase-koppeling
+        val1 = 0.5 * exp(im * 0.5 * R1)
+        val2 = 0.5 * exp(im * 0.5 * R2)
+        
+        ρ1[1,2] = val1; ρ1[2,1] = conj(val1)
+        ρ2[1,2] = val2; ρ2[2,1] = conj(val2)
+        
+        # Normaliseer na toevoeging van off-diagonale termen
+        ρ1 /= tr(ρ1)
+        ρ2 /= tr(ρ2)
+        
+        _, V1 = eigen(ρ1)
+        _, V2 = eigen(ρ2)
+        
+        # Gebruik een 'gapped' overlap (neem de vector met de grootste eigenwaarde)
+        overlap = dot(V1[:, end], V2[:, end])
+        push!(phases, imag(log(overlap)))
+    end
+    return sum(phases)
+end
