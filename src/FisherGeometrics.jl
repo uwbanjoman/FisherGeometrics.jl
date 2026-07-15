@@ -114,6 +114,7 @@ export christoffel
 export d_tensor, christoffel_vacuum, K_quad, ricci_scalar_quad
 export riemann_quadratic, ricci_tensor, ricci_scalar, einstein_tensor
 export bures_einstein, D2_KK, SF_exact, calculate_local_curvature
+export solve_sld
 # these may be redundant 
 export riemann, ricci, scalar_curvature
 
