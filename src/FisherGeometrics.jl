@@ -128,7 +128,7 @@ export su2_generator, u1_quark_generator, check_interactions
 export rho_KK, rho_complex_KK, entropy
 
 # Analysis.jl
-export compute_I_R_exact, print_I_R_summary
+export compute_I_R_exact, print_I_R_summary, run_fase_test
 
 # Christoffel.jl
 #export christoffel_symbols
