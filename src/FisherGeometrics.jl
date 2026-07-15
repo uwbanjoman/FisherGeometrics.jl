@@ -124,7 +124,7 @@ export interaction, geometric_acceleration, flux, covariant_shift, u1_generator,
 export su2_generator, u1_quark_generator, check_interactions
 
 # States.jl
-export rho_KK, entropy
+export rho_KK, rho_complex_KK, entropy
 
 # Christoffel.jl
 #export christoffel_symbols
