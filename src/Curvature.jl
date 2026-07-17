@@ -262,7 +262,8 @@ function riemann(g::FisherMetric, ρ::AbstractMatrix, basis)
 
     dg   = metric_derivatives(g, ρ, basis)   # n × n × n
     ddg  = ddmetric_tensor(g, ρ, basis)     # n × n × n × n
-    Γ    = christoffel(g, ρ, basis)          # n × n × n
+    #Γ    = christoffel(g, ρ, basis)          # n × n × n
+    Γ = permutedims(christoffel(g,ρ,basis), (3,1,2))
 
     # --- OPTIMALISATIE 1: Bereken dGinv vooraf via matrix-multiplicaties ---
     # dGinv_tensor[m, l, i] = ∂ᵢ G⁻¹_{ml}
