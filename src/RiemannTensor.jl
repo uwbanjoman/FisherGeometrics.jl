@@ -126,9 +126,7 @@ function riemann_tensor(ρ::AbstractMatrix, T::Vector;
         lin = dΓ(e,b,c,a) - dΓ(e,a,c,b)
 
         # Kwadratische bijdrage: ΓΓ
-        quad = sum(Γ0[f,b,c]*Γ0[e,a,f] - Γ0[f,a,c]*Γ0[e,b,f]
-                   for f in 1:N)
-
+        quad = sum(Γ0[f,b,c]*Γ0[e,a,f] - Γ0[f,a,c]*Γ0[e,b,f] for f in 1:N)
         R[e,a,b,c] = lin + quad
     end
     return R
