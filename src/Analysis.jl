@@ -168,21 +168,37 @@ function compute_I_R_path(ρ_start::AbstractMatrix,
                            step_size::Float64,
                            T::Vector)
     N = length(T)
+    n = size(ρ_start, 1)
     results = Tuple{Float64,Float64,Float64}[]
- 
+
     for i in 0:steps
-        t = i * step_size
+        t   = i * step_size
         ρ_c = Matrix{ComplexF64}(ρ_start + t * direction)
         ρ_c /= tr(ρ_c)
- 
-        # S_F via SF_GG (ΓΓ-only, correct voor R > 100)
-        p   = max.(real(eigvals(Hermitian(ρ_c))), 1e-15)
-        sort!(p)
-        sf  = SF_GG(ρ_c, T)
- 
+
+        # Eigenwaarden voor christoffel_rotate
+        p = sort(max.(real(eigvals(Hermitian(ρ_c))), 1e-15))
+
+        # S_F via exacte ΓΓ (christoffel_rotate — geen SF_GG)
+        Γ  = christoffel_rotate(p, T)
+        G  = zeros(Float64, N, N)
+        for a in 1:N, b in 1:N
+            G[a,b] = sum(real(conj(T[a][ii,jj])*T[b][ii,jj])/(2*(p[ii]+p[jj]))
+                         for ii in 1:n, jj in 1:n)
+        end
+        Gi = pinv(G; atol=1e-10)
+
+        R_GG = zeros(Float64, N, N, N, N)
+        for e in 1:N, a in 1:N, b in 1:N, c in 1:N
+            R_GG[e,a,b,c] = sum(Γ[f,b,c]*Γ[e,a,f] - Γ[f,a,c]*Γ[e,b,f]
+                                 for f in 1:N)
+        end
+        Ric = [sum(R_GG[b,a,b,c] for b in 1:N) for a in 1:N, c in 1:N]
+        sf  = sum(Gi[a,c]*Ric[a,c] for a in 1:N, c in 1:N)
+
         # Von Neumann entropie
-        svn = entropy(ρ_c)
- 
+        svn = -sum(v * log(v) for v in p if v > 1e-15)
+
         push!(results, (t, sf, svn))
         @printf("  t=%.2f  S_F=%+10.3f  S_VN=%.4f\n", t, sf, svn)
     end
