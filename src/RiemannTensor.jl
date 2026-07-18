@@ -96,6 +96,28 @@ function christoffel_symbols(ρ::AbstractMatrix, T::Vector;
     return Γ
 end
 
+# ── Riemann ─────────────────────────────────────────────────
+
+function riemann(g::FisherMetric, ρ::AbstractMatrix, basis;
+                 eps::Float64=1e-4)
+    N  = length(basis)
+    Γ0 = christoffel(g, ρ, basis)
+
+    function dΓ(e, b, c, a)
+        Γp = christoffel(g, ρ + eps*basis[a], basis)
+        Γm = christoffel(g, ρ - eps*basis[a], basis)
+        return (Γp[e,b,c] - Γm[e,b,c]) / (2*eps)
+    end
+
+    R = zeros(Float64, N, N, N, N)
+    for e in 1:N, a in 1:N, b in 1:N, c in 1:N
+        lin  = dΓ(e,b,c,a) - dΓ(e,a,c,b)
+        quad = sum(Γ0[f,b,c]*Γ0[e,a,f] - Γ0[f,a,c]*Γ0[e,b,f] for f in 1:N)
+        R[e,a,b,c] = lin + quad
+    end
+    return R
+end
+
 # ── Riemann-tensor ─────────────────────────────────────────────────
 
 """
