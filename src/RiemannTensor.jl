@@ -137,31 +137,6 @@ function riemann_tensor(ρ::AbstractMatrix, T::Vector;
     return R
 end
 
-# ── Ricci-tensor en scalaire kromming ─────────────────────────────
-
-"""
-    ricci_tensor(R) -> Matrix{Float64}
-
-Ric_{ac} = Σ_b R^b_{abc}   (contractie van eerste en derde index)
-"""
-function ricci_tensor(R::Array{Float64,4})
-    N   = size(R, 1)
-    Ric = zeros(Float64, N, N)
-    for a in 1:N, c in 1:N
-        Ric[a,c] = sum(R[b,a,b,c] for b in 1:N)
-    end
-    return Ric
-end
-
-"""
-    ricci_scalar(Ric, G_inv) -> Float64
-
-S_F = gᵃᵇ Ric_{ab}
-"""
-function ricci_scalar(Ric::Matrix, G_inv::Matrix)
-    return real(tr(G_inv * Ric))
-end
-
 # ── Handige alles-in-één functie ───────────────────────────────────
 
 """
