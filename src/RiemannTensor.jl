@@ -21,23 +21,6 @@
 using LinearAlgebra
 using Printf
 
-# ── Basis ─────────────────────────────────────────────────────────
-
-"""𝔰𝔲(n) basis: Tr(TₐTᵦ) = δₐᵦ/2."""
-function su_basis(n::Int)
-    T = Matrix{ComplexF64}[]
-    for j in 1:n, k in j+1:n
-        M = zeros(ComplexF64,n,n); M[j,k]=M[k,j]=0.5; push!(T,M)
-    end
-    for j in 1:n, k in j+1:n
-        M = zeros(ComplexF64,n,n); M[j,k]=-0.5im; M[k,j]=0.5im; push!(T,M)
-    end
-    for l in 1:n-1
-        M = zeros(ComplexF64,n,n); nrm=1/sqrt(2l*(l+1))
-        for j in 1:l; M[j,j]=nrm; end; M[l+1,l+1]=-l*nrm; push!(T,M)
-    end
-    return T
-end
 
 # ── Bures-metriek ─────────────────────────────────────────────────
 
