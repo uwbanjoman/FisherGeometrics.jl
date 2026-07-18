@@ -104,6 +104,7 @@ export metric, metric_matrix, numerical_gradient, natural_gradient
 export check_metric_normalization
 
 # MetricDerivative.jl
+export dmetric_rotate, metric_derivatives_rotate
 export dmetric, metric_derivatives
 export ddmetric, ddmetric_tensor
 
