@@ -116,7 +116,7 @@ export riemann_quadratic, ricci_tensor, ricci_scalar, einstein_tensor
 export bures_einstein, D2_KK, SF_exact, calculate_local_curvature
 export solve_sld
 # these may be redundant 
-export riemann, ricci, scalar_curvature
+export ricci, scalar_curvature
 
 # Actions.jl
 export information_action
@@ -135,7 +135,7 @@ export compute_I_R_exact, print_I_R_summary, run_fase_test
 #export christoffel_symbols
 
 # RiemannTensor.jl
-export christoffel_symbols, riemann_tensor, ricci_tensor, ricci_scalar, compute_curvature
+export christoffel_symbols, riemann, riemann_tensor, ricci_tensor, ricci_scalar, compute_curvature
 
 # ── Full scoreboard ───────────────────────────────────────────
 
