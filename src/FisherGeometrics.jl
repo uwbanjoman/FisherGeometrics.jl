@@ -136,7 +136,7 @@ export compute_I_R_exact, print_I_R_summary, run_fase_test
 #export christoffel_symbols
 
 # RiemannTensor.jl
-export christoffel_symbols, riemann, riemann_tensor, ricci_tensor, ricci_scalar, compute_curvature
+export christoffel_symbols, riemann, riemann_tensor, ricci_tensor, ricci_scalar, compute_curvature, sectional_curvatures_rotate
 
 # ── Full scoreboard ───────────────────────────────────────────
 
