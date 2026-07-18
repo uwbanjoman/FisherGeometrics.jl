@@ -54,27 +54,6 @@ function rho_complex_KK(R::Real, phi::Real)
 end
 
 """
-    entropy(ρ) -> Float64
-
-Von Neumann entropie S(ρ) = −Tr(ρ log ρ) = −Σ λᵢ log λᵢ.
-Numeriek stabiel: eigenwaarden kleiner dan 1e-15 worden genegeerd.
-
-Waarden:
-  ρ* = I/6  → S = log(6) ≈ 1.7918  (maximale entropie)
-  |0⟩⟨0|   → S = 0                  (pure toestand)
-"""
-function entropy(ρ::AbstractMatrix)
-    vals = real.(eigvals(Hermitian(ρ)))
-    return -sum(v * log(v) for v in vals if v > 1e-15)
-end
-
-# Behoud achterwaartse compatibiliteit met Diagonal-versie
-function entropy(ρ::Diagonal)
-    p = real.(ρ.diag)
-    return -sum(x * log(x) for x in p if x > 1e-15)
-end
-
-"""
     entropy_KK(R; n=6) -> Float64
 
 Von Neumann entropie van de KK-familie ρ(R), direct uit de eigenwaarden.
