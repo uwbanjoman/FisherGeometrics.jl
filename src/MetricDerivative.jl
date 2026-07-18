@@ -303,3 +303,106 @@ function ddmetric_tensor(g::FisherMetric, ρ::Diagonal{T}, basis) where {T<:Real
 
     return ddg
 end
+
+# ── Exacte metriekafgeleide voor diagonale toestanden ─────────────
+ 
+"""
+    dmetric_rotate(p, X, Y, Z) -> Float64
+ 
+Exacte richtingsafgeleide van de Bures-metriek bij diagonale ρ = diag(p):
+ 
+    D_Z g(X,Y)|_ρ
+ 
+via de SLD-formule (alle generatoren) gecombineerd met de
+eigenvector-rotatie-interpretatie (Haber 2019) voor off-diagonale Z.
+ 
+Drie gevallen op basis van het type Z:
+ 
+1. **Diagonale Z** (Z[i,j]=0 voor i≠j):
+   Eigenwaarden van ρ veranderen, eigenvectoren niet.
+   Exact analytische formule via (c_i+c_j)/(p_i+p_j)².
+ 
+2. **Off-diagonale Z** (symmetrisch of antisymmetrisch):
+   Eigenvectoren roteren bij perturbatie ρ+εZ.
+   SLD-formule: D_Z g(X,Y) = −½ Re Tr(X × Lρ⁻¹(jordan(Z, Lρ⁻¹(Y))))
+   met Lρ⁻¹(Y)[i,j] = Y[i,j]/(p_i+p_j).
+ 
+Geldig voor **alle R** — ook kleine R met grote eigenwaardenverschillen,
+en ook degenerate eigenwaarden (p_l = p_m).
+ 
+# Argumenten
+- `p`: eigenwaarden van ρ als Vector{Float64}
+- `X`, `Y`: Hermitische generatoren (metriek-argumenten)
+- `Z`: Hermitische generator (differentiatierichting)
+ 
+# Vergelijk met
+- `dmetric(::FisherMetric, ρ, X, Y, Z)`: via `Lρ_inv` (volle matrix)
+- `metric_derivatives(::FisherMetric, ρ, basis)`: volledige tensor
+ 
+# Gebruik
+```julia
+p   = rho_KK_eigenvalues(100.0)
+T   = su_basis(6)
+val = dmetric_rotate(p, T[1], T[1], T[32])   # ≈ -1.299
+```
+"""
+function dmetric_rotate(p::Vector{<:Real},
+                        X::AbstractMatrix,
+                        Y::AbstractMatrix,
+                        Z::AbstractMatrix)
+    n = length(p)
+ 
+    # Bepaal type Z
+    is_diag = all(abs(Z[i,j]) < 1e-12 for i in 1:n, j in 1:n if i ≠ j)
+ 
+    if is_diag
+        # Geval 1: diagonale Z — eigenwaarden veranderen
+        # D_Z g(X,Y) = −½ Σ_{ij} Re(X*_{ij} Y_{ij}) (c_i+c_j)/(p_i+p_j)²
+        s = 0.0
+        for i in 1:n, j in 1:n
+            d = p[i]+p[j]; d < 1e-15 && continue
+            ci = real(Z[i,i]); cj = real(Z[j,j])
+            s -= real(conj(X[i,j])*Y[i,j]) * (ci+cj) / d^2
+        end
+        return s / 2
+ 
+    else
+        # Geval 2/3: off-diagonale Z — eigenvector-rotatie
+        # D_Z g(X,Y) = −½ Re Tr(X × Lρ⁻¹(jordan(Z, Lρ⁻¹(Y))))
+        # met Lρ⁻¹(A)[i,j] = A[i,j]/(p_i+p_j)
+        LY   = [Y[i,j]/(p[i]+p[j]) for i in 1:n, j in 1:n]
+        jord = Z * LY + LY * Z
+        LjY  = [jord[i,j]/(p[i]+p[j]) for i in 1:n, j in 1:n]
+        return -real(tr(X * LjY)) / 2
+    end
+end
+ 
+"""
+    metric_derivatives_rotate(p, basis) -> Array{Float64,3}
+ 
+Volledige tensor van metriekafgeleiden via `dmetric_rotate`:
+ 
+    dg[a,b,c] = D_{basis[c]} g(basis[a], basis[b])|_{diag(p)}
+ 
+Exact voor alle generatoren, ook off-diagonale en degenerate eigenwaarden.
+Sneller dan `metric_derivatives` via SLD-inverse voor diagonale ρ.
+ 
+# Gebruik
+```julia
+p  = rho_KK_eigenvalues(100.0)
+T  = su_basis(6)
+dg = metric_derivatives_rotate(p, T)   # 35×35×35 tensor
+```
+"""
+function metric_derivatives_rotate(p::Vector{<:Real}, basis)
+    N  = length(basis)
+    dg = zeros(Float64, N, N, N)
+    for c in 1:N
+        for a in 1:N, b in a:N
+            v = dmetric_rotate(p, basis[a], basis[b], basis[c])
+            dg[a,b,c] = v
+            dg[b,a,c] = v
+        end
+    end
+    return dg
+end
