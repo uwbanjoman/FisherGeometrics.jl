@@ -32,7 +32,7 @@ include(joinpath(@__DIR__, "Actions.jl"))
 include(joinpath(@__DIR__, "Interactions.jl"))
 include(joinpath(@__DIR__, "States.jl"))
 include(joinpath(@__DIR__, "Analysis.jl"))
-#include(joinpath(@__DIR__, "RiemannTensor.jl"))
+include(joinpath(@__DIR__, "RiemannTensor.jl"))
 
 
 # ── Exports ───────────────────────────────────────────────────
@@ -135,7 +135,7 @@ export compute_I_R_exact, print_I_R_summary, run_fase_test
 #export christoffel_symbols
 
 # RiemannTensor.jl
-#export christoffel_symbols, riemann_tensor, ricci_tensor, ricci_scalar, compute_curvature
+export christoffel_symbols, riemann_tensor, ricci_tensor, ricci_scalar, compute_curvature
 
 # ── Full scoreboard ───────────────────────────────────────────
 
