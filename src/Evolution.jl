@@ -76,6 +76,12 @@ function entropy(ρ::AbstractMatrix)
     return -sum(λ*log(λ) for λ in vals if λ > 1e-15)
 end
 
+# Behoud achterwaartse compatibiliteit met Diagonal-versie
+function entropy(ρ::Diagonal)
+    p = real.(ρ.diag)
+    return -sum(x * log(x) for x in p if x > 1e-15)
+end
+
 """
     information_distance_trajectory(traj) → Vector{Float64}
 
