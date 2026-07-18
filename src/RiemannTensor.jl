@@ -221,6 +221,49 @@ function sectional_curvatures(ρ::AbstractMatrix, T::Vector;
     return results
 end
 
+"""
+    sectional_curvatures_rotate(p, basis; n_pairs=10) -> Vector{Tuple{Int,Int,Float64}}
+
+Steekproef van sectionele krommingen K(Tₐ,Tᵦ) voor diagonale ρ = diag(p).
+Gebruikt `christoffel_rotate` — exact en snel (~seconden).
+
+    K(X,Y) = R(X,Y,X,Y) / (g(X,X)g(Y,Y) − g(X,Y)²)
+
+Verwachte waarden bij ρ* = I/6: K = +0.25 voor alle paren.
+"""
+function sectional_curvatures_rotate(p::Vector{<:Real}, basis;
+                                     n_pairs::Int=10)
+    N  = length(basis)
+    n  = length(p)
+    Γ0 = christoffel_rotate(p, basis)
+
+    # Metriek
+    G = zeros(Float64, N, N)
+    for a in 1:N, b in 1:N
+        G[a,b] = sum(real(conj(basis[a][i,j])*basis[b][i,j])/(2*(p[i]+p[j]))
+                     for i in 1:n, j in 1:n)
+    end
+
+    results = Tuple{Int,Int,Float64}[]
+    for a in 1:min(n_pairs, N)
+        for b in a+1:min(n_pairs+1, N)
+            # ΓΓ-bijdrage aan R(Tₐ,Tᵦ,Tₐ,Tᵦ)
+            R_abab = 0.0
+            for e in 1:N
+                quad = sum(Γ0[f,b,a]*Γ0[e,a,f] - Γ0[f,a,a]*Γ0[e,b,f]
+                           for f in 1:N)
+                R_abab += G[b,e] * quad
+            end
+
+            denom = G[a,a]*G[b,b] - G[a,b]^2
+            K = denom > 1e-20 ? R_abab/denom : 0.0
+            push!(results, (a, b, K))
+        end
+        length(results) >= n_pairs && break
+    end
+    return results
+end
+
 ########################################################################
 #  VOORBEELD
 ########################################################################
