@@ -131,7 +131,7 @@ export rho_KK, rho_KK_eigenvalues, rho_complex_KK, entropy, entropy_KK
 export D2_bures_KK
 
 # Analysis.jl
-export compute_I_R, compute_I_R_exact, print_I_R_summary, run_fase_test
+export compute_I_R, compute_I_R_exact, print_I_R_summary, compute_I_R_path, run_fase_test
 
 # Christoffel.jl
 #export christoffel_symbols
