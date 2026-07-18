@@ -24,14 +24,6 @@ using Printf
 
 # ── Bures-metriek ─────────────────────────────────────────────────
 
-"""Oplost ρL + Lρ = 2Y via pinv (robuust bij singuliere ρ)."""
-function solve_sld(ρ::AbstractMatrix, Y::AbstractMatrix; tol=1e-12)
-    n = size(ρ,1)
-    A = kron(ρ, I(n)) + kron(I(n), transpose(ρ))
-    L = reshape(pinv(A; atol=tol) * 2vec(ComplexF64.(Y)), n, n)
-    return (L + L') / 2
-end
-
 """Bures-metriek g(X,Y)|_ρ = ¼ Re Tr(X L_Y)."""
 bures_g(ρ, X, Y) = (1/4) * real(tr(X * solve_sld(ρ, Y)))
 
