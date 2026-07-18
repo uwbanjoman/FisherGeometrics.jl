@@ -127,7 +127,7 @@ export interaction, geometric_acceleration, flux, covariant_shift, u1_generator,
 export su2_generator, u1_quark_generator, check_interactions
 
 # States.jl
-export rho_KK, rho_KK_eigenvalues, rho_complex_KK, entropy
+export rho_KK, rho_KK_eigenvalues, rho_complex_KK, entropy, entropy_KK
 
 # Analysis.jl
 export compute_I_R_exact, print_I_R_summary, run_fase_test
