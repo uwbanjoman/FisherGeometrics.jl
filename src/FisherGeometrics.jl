@@ -109,7 +109,7 @@ export dmetric, metric_derivatives
 export ddmetric, ddmetric_tensor
 
 # Connection.jl
-export christoffel
+export christoffel, christoffel_rotate
 
 # Curvature.jl
 export d_tensor, christoffel_vacuum, K_quad, ricci_scalar_quad
