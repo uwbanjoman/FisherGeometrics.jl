@@ -405,3 +405,31 @@ function lowest_massive_spinor(; M1max::Int=4, J_extra::Int=2)
     return results[1]
 end
 
+# Analytische SD coëfficiënten voor M^{1,1,1}
+# Einstein-metriek: Ric = 6g, R = 42, dim = 7
+
+function seeley_dewitt_analytical(p::Int)
+    d   = 7
+    R   = 42.0          # scalaire kromming
+    Rij = 252.0         # Tr(Ric²) = 6² × 7
+    Vol = π^5 / 96.0    # Vol(M^{1,1,1}) standaard normalisatie
+
+    # a₀: binomiaalcoëfficiënt × volume
+    a0 = binomial(d, p) * Vol / (4π)^(d/2)
+
+    # a₂: kromming correctie (Einstein-ruimte: Ric = 6g)
+    # Gilkey formule voor p-vormen op Einstein-ruimte:
+    # a₂(Δ_p) = [R/6 × (d choose p) - (d-2 choose p-1) × κ] × Vol/(4π)^{d/2}
+    # waarbij κ = R/d = 42/7 = 6
+    κ = R / d
+    a2_factor = binomial(d,p)*R/6 - (p >= 1 ? binomial(d-2,p-1)*κ : 0)
+    a2 = a2_factor * Vol / (4π)^(d/2)
+
+    return (a0=a0, a1=0.0, a2=a2, a3=0.0)  # a₁=a₃=0 (oneven dim)
+end
+
+# Test
+for p in 0:3
+    sd = seeley_dewitt_analytical(p)
+    @printf("p=%d: a₀=%.4f  a₂=%.4f\n", p, sd.a0, sd.a2)
+end
