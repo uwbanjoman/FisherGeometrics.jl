@@ -90,7 +90,7 @@ export centralizer_matrix, cartan_matrix, expansion_matrix
 export H0, valid_rep
 export spectrum_scalar, spectrum_vector, spectrum_twoform, spectrum_threeform, spectrum_spinor
 export kk_spectrum, massless_check, lowest_massive_spinor
-export  mass_gap_M111, M_min_KK, hierarchy_resolution
+export  mass_gap_M111, M_min_KK, hierarchy_resolution, seeley_dewitt_analytical
 
 # Operators.jl
 export jordan, Lρ, Rρ, Lρ_matrix, Rρ_matrix
