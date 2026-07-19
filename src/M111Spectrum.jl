@@ -427,9 +427,3 @@ function seeley_dewitt_analytical(p::Int)
 
     return (a0=a0, a1=0.0, a2=a2, a3=0.0)  # a₁=a₃=0 (oneven dim)
 end
-
-# Test
-for p in 0:3
-    sd = seeley_dewitt_analytical(p)
-    @printf("p=%d: a₀=%.4f  a₂=%.4f\n", p, sd.a0, sd.a2)
-end
