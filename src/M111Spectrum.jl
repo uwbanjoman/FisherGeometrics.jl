@@ -447,6 +447,13 @@ waarbij:
   χ(CP²) = 3, χ(S²) = 2  Euler-karakteristieken
   210 = 14×15             KK-normalisatiefactor (11D supergravity op 7D M¹·¹·¹)
 
+In oneill_correction():
+De teller 35 decomponeer als:
+  27 = χ(CP²) × n_eff = 3 × 9 = 3 × χ(CP²)²  (SU(3)-sector)
+   8 = y_S²² × χ(S²) = 4 × 2                   (SU(2)-sector)
+waarbij n_eff = χ(CP²)² = 9 een topologische invariant is
+van de coset SU(3)/[SU(2)×U(1)] ≈ CP²            
+
 # Gebruik
 ```julia
 delta_W = oneill_correction()   # → 0.16667  (= 1/6)
