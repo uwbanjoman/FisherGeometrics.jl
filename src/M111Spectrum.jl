@@ -427,3 +427,25 @@ function seeley_dewitt_analytical(p::Int)
 
     return (a0=a0, a1=0.0, a2=a2, a3=0.0)  # a₁=a₃=0 (oneven dim)
 end
+            
+# In M111Spectrum.jl of Curvature.jl
+function oneill_correction()
+    # U(1) charges uit Fabbri et al.
+    y_CP2 = 3.0; y_S2 = 2.0
+    # Euler karakteristieken
+    χ_CP2 = 3.0; χ_S2 = 2.0
+    # KK normalisatiefactor
+    KK_norm = 210.0
+    
+    raw = y_CP2^2 * χ_CP2 + y_S2^2 * χ_S2  # = 35
+    return raw / KK_norm                      # = 1/6
+end
+
+function bh_partition_sum()
+    W_approx = -1.197223  # Document XVII
+    ΔW = oneill_correction()
+    W_total = W_approx + ΔW
+    target = -log(π^5 / (2*exp(1)^4))
+    return (W=W_total, target=target, 
+            gap=abs(W_total-target)/abs(target)*100)
+end
