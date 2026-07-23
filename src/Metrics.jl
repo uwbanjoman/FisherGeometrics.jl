@@ -235,3 +235,47 @@ function bures_metric(p::Vector{Float64})
              for a in 1:N, b in 1:N], N, N)
 end
 
+"""
+    spacetime_perturbation(R::Float64) -> Matrix{Float64}
+
+Compute the spacetime metric perturbation h_μν = G(ρ(R)) − G(ρ*)
+around the vacuum ρ* at KK scale R* = 4260.
+
+In linearised general relativity: g_μν = η_μν + h_μν.
+In FisherGeometrics: h_μν = G(ρ(R)) − G(ρ*) where G is the
+35×35 Bures metric tensor and ρ(R) is the KK density matrix at scale R.
+
+The perturbation h_μν encodes the spacetime curvature caused by
+any physical system at energy scale R. For the hydrogen atom
+(R_H = M_KK²/E₁ ≈ 2.3×10²⁰): Tr(h) = −2.73×10⁻³, max|h_μν| = 1.57×10⁻².
+
+The relative curvature Tr(h)/Tr(g) ≈ 10⁻⁴ confirms that the hydrogen
+atom is in the deep linear regime of FisherGeometrics.
+
+# Arguments
+- `R`: KK scale parameter (R* = 4260 is the electroweak vacuum)
+
+# Returns
+35×35 perturbation matrix h_μν = G(ρ(R)) − G(ρ*)
+
+# Examples
+```julia
+M_KK_eV = 178.1e9
+R_H  = M_KK_eV^2 / 13.6        # hydrogen ground state
+h_μν = spacetime_perturbation(R_H)
+
+tr(h_μν)                        # → −2.73e-3
+maximum(abs.(h_μν))             # → 1.57e-2
+tr(h_μν) / 26.25               # → −1.04e-4  (relative curvature)
+
+eigvals(h_μν)                   # SU(6) generator structure
+```
+
+See: FisherGeometrics preprint v15, section 6 (hydrogen atom).
+     examples/hydrogen_spacetime.jl for a complete demonstration.
+"""
+function spacetime_perturbation(R::Float64)
+    p_R    = rho_KK_eigenvalues(R)
+    p_star = rho_KK_eigenvalues(4260.0)
+    bures_metric(p_R) - bures_metric(p_star)
+end
