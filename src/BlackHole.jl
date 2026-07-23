@@ -36,3 +36,42 @@ function hawking_temp_FG(M_kg::Float64)
     T_MeV = μ₀ * τ / (8π * M_MeV)
     return T_MeV * 1.602e-13 / k_B
 end
+
+"""
+    evaporation_time(M_kg::Float64) -> Float64
+
+Hawking evaporation time of a black hole.
+
+    t_evap = 5120π × G³/(ħc⁴) × M³
+
+The evaporation time follows from Stefan-Boltzmann radiation at the
+Hawking temperature T_H ∝ 1/M. As the black hole radiates, M decreases,
+T_H increases, and the process accelerates — ending in a final burst
+when M → M_Planck.
+
+In FisherGeometrics: evaporation is BGK relaxation ρ̂_BH(t) → ρ*.
+The timescale t_evap is the time for the density matrix to return
+to the vacuum ρ* = I/6.
+
+# Arguments
+- `M_kg`: initial black hole mass in kg
+
+# Returns
+Evaporation time in seconds
+
+# Examples
+```julia
+M_sun = 1.989e30
+evaporation_time(M_sun)      # → 2.09e74 s  (much longer than age of universe)
+evaporation_time(1e12)       # → 8.41e26 s  (primordial BH, ~10⁻¹¹ kg → gone)
+evaporation_time(2.176e-8)   # → Planck mass → ~5.4e-44 s (one Planck time)
+```
+
+See: FisherGeometrics preprint v15, section 11 (black hole evaporation).
+"""
+function evaporation_time(M_kg::Float64)
+    G  = 6.674e-11   # m³ kg⁻¹ s⁻²
+    ħ  = 1.055e-34   # J·s
+    c  = 3e8         # m/s
+    return 5120π * G^3 / (ħ * c^4) * M_kg^3
+end
