@@ -444,3 +444,61 @@ function hadron_spectrum(; v::Float64=246220.0, verbose::Bool=true)
 
     return results
 end
+
+"""
+    SF_GG(p::Vector{Float64}) -> Float64
+
+Compute the Ricci scalar S_F via the ΓΓ terms of the Bures metric.
+
+Extended Theorem E guarantees S_F^{∂Γ} = 0 for all ρ ∈ D₆,
+so S_F = S_F^{ΓΓ} exactly (Dittmann 1999, symmetric space).
+
+Computation steps:
+  1. Christoffel symbols Γ via christoffel_rotate(p, T)
+  2. Bures metric G_{ab} and inverse G^{ab} via pinv
+  3. Riemann tensor R^e_{abc} = Σ_f (Γ^f_{bc}Γ^e_{af} − Γ^f_{ac}Γ^e_{bf})
+  4. Ricci tensor Ric_{ac} = Σ_b R^b_{abc}
+  5. Ricci scalar S_F = Σ_{ac} G^{ac} Ric_{ac}
+
+At the vacuum ρ* = I/6: S_F = 560 (proved, Proof 04).
+The information-geometric RGE: α_s(R) = α_s* × 560/S_F(ρ(R)).
+
+# Arguments
+- `p`: eigenvalues of the density matrix ρ ∈ D₆
+
+# Returns
+Ricci scalar S_F ∈ ℝ
+
+# Examples
+```julia
+p_star = rho_KK_eigenvalues(4260.0)
+SF_GG(p_star)           # → 560.0   (vacuum)
+
+p_100 = rho_KK_eigenvalues(100.0)
+SF_GG(p_100)            # → 238.22  (α_s ≈ 0.28 at R=100)
+```
+
+See: FisherGeometrics preprint v15, section 3 (Extended Theorem E).
+"""
+function SF_GG(p::Vector{Float64})
+    T  = su_basis(6)
+    N  = length(T)
+    n  = 6
+
+    Γ  = christoffel_rotate(p, T)
+
+    G  = reshape([sum(real(conj(T[a][i,j])*T[b][i,j])/(2*(p[i]+p[j]))
+                      for i in 1:n, j in 1:n)
+                  for a in 1:N, b in 1:N], N, N)
+    Gi = pinv(G)
+
+    R_GG = zeros(N, N, N, N)
+    for e in 1:N, a in 1:N, b in 1:N, c in 1:N
+        R_GG[e,a,b,c] = sum(Γ[f,b,c]*Γ[e,a,f] - Γ[f,a,c]*Γ[e,b,f]
+                            for f in 1:N)
+    end
+
+    Ric = [sum(R_GG[b,a,b,c] for b in 1:N) for a in 1:N, c in 1:N]
+
+    return sum(Gi[a,c]*Ric[a,c] for a in 1:N, c in 1:N)
+end
