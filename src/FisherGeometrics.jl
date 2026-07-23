@@ -134,7 +134,7 @@ export D2_bures_KK
 
 # Analysis.jl
 export compute_I_R, compute_I_R_exact, print_I_R_summary, compute_I_R_path, run_fase_test
-export proton_mass(), pion_mass()
+export proton_mass, pion_mass, hadron_spectrum
 
 # Christoffel.jl
 #export christoffel_symbols
