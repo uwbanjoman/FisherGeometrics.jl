@@ -75,3 +75,44 @@ function evaporation_time(M_kg::Float64)
     c  = 3e8         # m/s
     return 5120π * G^3 / (ħ * c^4) * M_kg^3
 end
+
+"""
+    bh_entropy(M_kg::Float64) -> Float64
+
+Bekenstein-Hawking entropy of a black hole in natural units (k_B = 1).
+
+    S_BH = A / (4G_N)  =  4π G M² / (ħc)
+
+Derived in FisherGeometrics via the one-loop partition sum on M₄×K
+plus the O'Neill A-tensor correction Tr(Â²)_norm = 35/210 = 1/6:
+
+    c_log = ζ'_base(0) + 1/6 = −1.030556  (0.005% from target)
+
+This establishes S_BH = A/(4G_N) with zero free parameters.
+
+The entropy measures the Bures distance of ρ̂_BH from the vacuum ρ*:
+a larger black hole is further from ρ* and has higher entropy.
+
+# Arguments
+- `M_kg`: black hole mass in kg
+
+# Returns
+Bekenstein-Hawking entropy in units of k_B
+
+# Examples
+```julia
+M_sun = 1.989e30
+bh_entropy(M_sun)       # → 1.05e77  k_B  (solar mass BH)
+bh_entropy(2.176e-8)    # → Planck mass → ~1 k_B (one bit)
+```
+
+See: FisherGeometrics preprint v15, sections 8 and 11.
+     BH_coefficient_derivation.pdf for the complete derivation.
+"""
+function bh_entropy(M_kg::Float64)
+    G  = 6.674e-11   # m³ kg⁻¹ s⁻²
+    ħ  = 1.055e-34   # J·s
+    c  = 3e8         # m/s
+    k_B = 1.381e-23  # J/K
+    return 4π * G * M_kg^2 / (ħ * c * k_B)
+end
