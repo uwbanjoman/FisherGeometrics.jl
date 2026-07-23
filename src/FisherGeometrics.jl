@@ -95,7 +95,6 @@ export H0, valid_rep
 export spectrum_scalar, spectrum_vector, spectrum_twoform, spectrum_threeform, spectrum_spinor
 export kk_spectrum, massless_check, lowest_massive_spinor
 export  mass_gap_M111, M_min_KK, hierarchy_resolution, seeley_dewitt_analytical
-export oneill_correction, bh_partition_sum
 
 # Operators.jl
 export jordan, Lρ, Rρ, Lρ_matrix, Rρ_matrix
@@ -138,7 +137,7 @@ export D2_bures_KK
 
 # Analysis.jl
 export compute_I_R, compute_I_R_exact, print_I_R_summary, compute_I_R_path, run_fase_test
-export proton_mass, pion_mass, pion_decay_constant, hadron_spectrum, SF_GG
+export SF_GG
 
 # Christoffel.jl
 #export christoffel_symbols
@@ -155,8 +154,11 @@ export bgk_relaxation, dark_energy_fraction, universe_ground_state
 # Mixing.jl
 export ckm_wolfenstein, pmns_angles, cp_phase
 
+# Hadrons.jl
+export hadron_spectrum, proton_mass, pion_mass, pion_decay_constant, oneill_correction, bh_partition_sum
+
 # Predictions.jl
-export glueball_mass
+export glueball_mass, dark_baryon_mass, regge_slope, mass_gap_floor
 
 # ── Full scoreboard ───────────────────────────────────────────
 
