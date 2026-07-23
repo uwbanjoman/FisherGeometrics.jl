@@ -33,6 +33,8 @@ include(joinpath(@__DIR__, "Interactions.jl"))
 include(joinpath(@__DIR__, "States.jl"))
 include(joinpath(@__DIR__, "Analysis.jl"))
 include(joinpath(@__DIR__, "RiemannTensor.jl"))
+include(joinpath(@__DIR__, "Cosmology.jl"))
+include(joinpath(@__DIR__, "Mixing.jl"))
 
 
 # ── Exports ───────────────────────────────────────────────────
