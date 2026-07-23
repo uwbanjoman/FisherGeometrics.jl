@@ -317,6 +317,43 @@ function pion_mass(; v::Float64=246220.0)
 end
 
 """
+    pion_decay_constant(; v::Float64=246220.0) -> Float64
+
+Pion decay constant f_π from the Sasakian-Einstein geometry of M¹·¹·¹.
+
+    f_π = (1 + τ²) × Λ_QCD
+
+where Λ_QCD = M_KK × exp(−2π/(β₀α_s)) is the QCD confinement scale
+derived from the FisherGeometrics SM predictions (M_KK = 178.1 GeV,
+α_s = 0.1181, β₀ = 7 for n_f = 6 active flavors).
+
+The factor (1+τ²) is the same Killing-spinor correction that appears
+in the pion mass formula, reflecting the coupling of the axial-vector
+current to the second Killing-spinor direction on CP².
+
+# Arguments
+- `v`: Higgs VEV in MeV (default: 246220.0)
+
+# Returns
+Pion decay constant f_π in MeV
+
+# Examples
+```julia
+pion_decay_constant()    # → 92.67 MeV  (measured: 93.0 MeV, 0.4%)
+```
+
+See: FisherGeometrics preprint v15, section 7.
+"""
+function pion_decay_constant(; v::Float64=246220.0)
+    τ    = 1/5
+    α_s  = 0.1181
+    M_KK = 178100.0   # MeV
+    β₀   = 11 - 2*6/3  # n_f = 6 at M_KK
+    Λ_QCD = M_KK * exp(-2π/(β₀*α_s))
+    return (1 + τ^2) * Λ_QCD
+end
+
+"""
     hadron_spectrum(; v::Float64=246220.0, verbose::Bool=true) -> Vector{NamedTuple}
 
 Compute 13 hadron masses from the M¹·¹·¹ topology.
