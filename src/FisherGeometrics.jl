@@ -41,7 +41,7 @@ include(joinpath(@__DIR__, "Predictions.jl"))
 
 # ── Exports ───────────────────────────────────────────────────
 
-export fisher_excess # re-export from QuantumFisher
+export fisher_excess, mixed_state # re-export from QuantumFisher
 
 export scoreboard, check_all, info, unified_equation
 export check_geometry, check_symmetry, check_dynamics, check_gravity, check_evolution
