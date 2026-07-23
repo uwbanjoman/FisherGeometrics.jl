@@ -36,6 +36,7 @@ include(joinpath(@__DIR__, "RiemannTensor.jl"))
 include(joinpath(@__DIR__, "BlackHole.jl"))
 include(joinpath(@__DIR__, "Cosmology.jl"))
 include(joinpath(@__DIR__, "Mixing.jl"))
+include(joinpath(@__DIR__, "Predictions.jl"))
 
 
 # ── Exports ───────────────────────────────────────────────────
@@ -153,6 +154,9 @@ export bgk_relaxation, dark_energy_fraction, universe_ground_state
 
 # Mixing.jl
 export ckm_wolfenstein, pmns_angles, cp_phase
+
+# Predictions.jl
+export glueball_mass
 
 # ── Full scoreboard ───────────────────────────────────────────
 
