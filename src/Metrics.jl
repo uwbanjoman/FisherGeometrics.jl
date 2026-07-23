@@ -187,3 +187,51 @@ function check_metric_normalization(n)
     println("‖G - (n/2)I‖ = ",
             norm(G - (n/2)*I, Inf))
 end
+
+"""
+    bures_metric(p::Vector{Float64}) -> Matrix{Float64}
+
+Compute the 35×35 Bures metric tensor G_{ab} at density matrix
+eigenvalues p — the spacetime metric in FisherGeometrics.
+
+    g_μν = F_μν[ρ̂] / ρ₀  (FisherGeometrics postulate, ρ₀ = 1/6)
+
+The Bures metric on D₆ evaluated at eigenvalues p gives the quantum
+Fisher information metric, which IS the spacetime metric via the
+FisherGeometrics postulate. This is the bridge between quantum mechanics
+and general relativity.
+
+At the vacuum ρ* = I/6 (p = [1/6, ..., 1/6]): Tr(G) = 26.25, S_F = 560.
+For the hydrogen ground state (R_H = M_KK²/E₁): Tr(G) = 26.250, ΔTr = 2.73e-3.
+
+# Arguments
+- `p`: eigenvalues of the density matrix ρ ∈ D₆  (length 6, sum = 1)
+
+# Returns
+35×35 symmetric positive-definite metric matrix G_{ab}
+
+# Examples
+```julia
+p_star = rho_KK_eigenvalues(4260.0)
+G_star = bures_metric(p_star)
+tr(G_star)                          # → 26.25  (vacuum)
+
+M_KK_eV = 178.1e9
+R_H = M_KK_eV^2 / 13.6
+p_H = rho_KK_eigenvalues(R_H)
+G_H = bures_metric_full(p_H)
+ΔG  = G_H - G_star                  # spacetime perturbation h_μν
+```
+
+See: FisherGeometrics preprint v15, section 6 (hydrogen atom).
+     examples/hydrogen_spacetime.jl for a complete demonstration.
+"""
+function bures_metric(p::Vector{Float64})
+    T = su_basis(6)
+    N = length(T)
+    n = 6
+    reshape([sum(real(conj(T[a][i,j])*T[b][i,j])/(2*(p[i]+p[j]))
+                 for i in 1:n, j in 1:n)
+             for a in 1:N, b in 1:N], N, N)
+end
+
