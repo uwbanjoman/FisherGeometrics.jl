@@ -74,11 +74,11 @@ function ckm_matrix()
 end
 
 """
-    ckm_wolfenstein() → NamedTuple
+    ckm_wolfenstein_old() → NamedTuple
 
 CKM in Wolfenstein parametrisation. λ=λ_W, δ=arctan(φ²).
 """
-function ckm_wolfenstein()
+function ckm_wolfenstein_old()
     V = ckm_matrix()
     return (λ=λ_W, A=abs(V[2,3])/λ_W^2, ρ̄=0.159, η̄=0.348, δ=δ_CP)
 end
