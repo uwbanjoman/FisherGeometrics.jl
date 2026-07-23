@@ -83,3 +83,114 @@ function bgk_relaxation(R_start::Float64, R_end::Float64, n_steps::Int=10;
     return collect(results)
 end
 
+"""
+    dark_energy_fraction() -> Float64
+
+Dark energy fraction Ω_Λ from the FisherGeometrics information geometry.
+
+    Ω_Λ = ΔN / N_sur ≈ 0.667
+
+where ΔN is the number of bits processed by the vacuum and N_sur is
+the total number of bits on the cosmological horizon (Padmanabhan 2012).
+
+In FisherGeometrics: the cosmological constant Λ = 264 (in Bures units)
+is the curvature of the vacuum state ρ* = I/6. The dark energy fraction
+follows from the ratio of processed to total information on the horizon
+— zero free parameters.
+
+    Ω_Λ_FG  = 0.667  (FisherGeometrics)
+    Ω_Λ_obs = 0.685  (Planck 2018, 2.6% deviation)
+
+The dark energy is not a separate component but the BGK relaxation
+of the universe toward ρ* — the vacuum information processing rate.
+
+# Returns
+Dark energy fraction Ω_Λ (dimensionless)
+
+# Examples
+```julia
+Ω_Λ = dark_energy_fraction()    # → 0.667
+
+# Consistency check with cosmological constant
+Λ_bures = 264.0                 # FisherGeometrics prediction
+@printf("Λ = %.0f Bures units\\n", Λ_bures)
+@printf("Ω_Λ = %.3f\\n", dark_energy_fraction())
+```
+
+See: FisherGeometrics preprint v15, section 5 (cosmology).
+"""
+function dark_energy_fraction()
+    # ΔN/N_sur = 0.667 from Document III (zero free parameters)
+    return 2/3
+end
+
+"""
+    universe_ground_state() -> NamedTuple
+
+Properties of the ground state of the universe in FisherGeometrics.
+
+The ground state is the maximally mixed density matrix ρ* = I/6 on D₆,
+corresponding to the KK scale R* = 4260 (electroweak vacuum). This is
+the state of maximum entropy and minimum structure toward which the
+universe asymptotically relaxes via BGK relaxation.
+
+Ground state properties:
+  ρ*    = I/6           maximally mixed state on D₆
+  R*    = 4260          electroweak KK scale
+  S_F   = 560           Ricci scalar (proved, Proof 04)
+  Λ     = 264           cosmological constant (Bures units)
+  Ω_Λ   = 0.667         dark energy fraction
+  D²    = 0             Bures distance to itself
+  α_s   = 0.1181        strong coupling at R*
+
+The universe is currently near but not at the ground state.
+BGK relaxation drives ρ̂(t) → ρ* exponentially on timescale
+τ_relax ~ t_Hubble / Λ ~ 5×10⁸ yr.
+
+# Returns
+NamedTuple with fields:
+  ρ_star, R_star, S_F, Λ, Ω_Λ, α_s, τ_relax_yr
+
+# Examples
+```julia
+gs = universe_ground_state()
+gs.S_F       # → 560.0
+gs.Λ         # → 264.0
+gs.Ω_Λ       # → 0.667
+gs.τ_relax_yr  # → relaxation timescale in years
+```
+
+See: FisherGeometrics preprint v15, section 5 (cosmology).
+     examples/black_hole_evaporation.jl section 6.
+"""
+function universe_ground_state()
+    R_star = 4260.0
+    p_star = rho_KK_eigenvalues(R_star)
+    S_F    = SF_GG(p_star)
+    Λ      = 264.0
+    Ω_Λ    = dark_energy_fraction()
+    α_s    = 0.1181
+
+    # BGK relaxation timescale τ ~ t_Hubble / Λ
+    t_H_yr    = 13.8e9    # Hubble time in years
+    τ_relax   = t_H_yr / Λ
+
+    if true
+        println("\nUNIVERSE GROUND STATE — FisherGeometrics")
+        println("="^50)
+        @printf("  ρ*        = I/6  (maximally mixed on D₆)\n")
+        @printf("  R*        = %.1f\n", R_star)
+        @printf("  S_F(ρ*)   = %.4f  (vacuum Ricci scalar)\n", S_F)
+        @printf("  Λ         = %.1f  (Bures units)\n", Λ)
+        @printf("  Ω_Λ       = %.3f\n", Ω_Λ)
+        @printf("  α_s(R*)   = %.4f\n", α_s)
+        @printf("  τ_relax   = %.3e yr\n", τ_relax)
+        println()
+        @printf("  BGK: dρ̂/dt = −(ρ̂ − ρ*)/τ_relax → ρ* as t → ∞\n")
+        println()
+    end
+
+    return (ρ_star=p_star, R_star=R_star, S_F=S_F,
+            Λ=Λ, Ω_Λ=Ω_Λ, α_s=α_s, τ_relax_yr=τ_relax)
+end
+
