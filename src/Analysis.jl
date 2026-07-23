@@ -239,45 +239,41 @@ function run_fase_test(R_range, β, M1, M2, J)
 end
 
 """
-    proton_mass() -> Float64
+    proton_mass(; v::Float64=246220.0) -> Float64
 
-Protonmassa afgeleid uit de M¹·¹·¹ topologie:
+Proton mass from the M¹·¹·¹ topology.
 
-    m_p = (v/210) × dim(SU(3)_adj) × τ/2
-        = (v/210) × 8 × (1/10)
-        = 4v/1050
+    m_p = μ₀ × 4τ = 4v/1050
 
-waarbij:
-  v   = 246220 MeV  (Higgs VEV, FG SM-predictie)
-  210 = KK-normalisatiefactor (11D supergravity op 7D M¹·¹·¹)
-  8   = dim(SU(3)_adj) = aantal gluonen (sterke kracht)
-  τ/2 = 1/10 = holonomie-schaling van M¹·¹·¹
+Three geometric factors:
+  μ₀ = v/210 = 1172.47 MeV   Higgs VEV / KK normalization factor
+  4τ = 4/5   = 0.8            holonomy scaling of M¹·¹·¹
+  (equivalently: dim(SU(3)_adj) × τ/2 = 8 × 1/10 = 0.8)
 
-Resultaat: 937.98 MeV (gemeten: 938.272 MeV, verschil 0.031%)
-Residuele 0.29 MeV = elektromagnetische zelf-energie van quarks (QED).
+The proton is a topological Skyrmion in the SU(3) sector of M¹·¹·¹.
+Its mass is determined by the winding of the SU(3) holonomy, not by
+a KK eigenvalue. This resolves the QCD mass gap problem geometrically.
 
-# Gebruik
+Residual 0.29 MeV (0.031%) = QED electromagnetic self-energy of quarks.
+
+# Arguments
+- `v`: Higgs VEV in MeV (default: 246220.0)
+
+# Returns
+Proton mass in MeV
+
+# Examples
 ```julia
-m_p = proton_mass()   # → 937.98 MeV
+proton_mass()              # → 937.98 MeV  (measured: 938.272 MeV, 0.031%)
+proton_mass(v=246220.0)    # same
 ```
 
-Zie: FisherGeometrics Document XXX, sectie 8.
+See: FisherGeometrics preprint v15, section 7.
 """
 function proton_mass(; v::Float64=246220.0)
-    KK_norm    = 210.0          # KK-normalisatiefactor
-    dim_adj    = 8.0            # dim(SU(3)_adj) = aantal gluonen
-    τ_FG       = 1/5            # holonomie-parameter
-    scaling    = τ_FG / 2      # = 1/10
-
-    m_p = (v / KK_norm) * dim_adj * scaling
-
-    target = 938.272  # MeV gemeten
-    @printf("m_p (FG)  = %.4f MeV\n", m_p)
-    @printf("Gemeten   = %.4f MeV\n", target)
-    @printf("Verschil  = %.4f MeV (%.4f%%)\n",
-            abs(m_p-target), abs(m_p-target)/target*100)
-    @printf("Residueel = QED zelf-energie quarks\n")
-    return m_p
+    τ  = 1/5
+    μ₀ = v/210.0
+    return μ₀ * 4τ
 end
 
 """
