@@ -332,3 +332,115 @@ function pion_mass(; v::Float64=246220.0)
             abs(m_π-target), abs(m_π-target)/target*100)
     return m_π
 end
+
+"""
+    hadron_spectrum(; v=246220.0, verbose=true) -> DataFrame
+
+Berekent het hadronspectrum vanuit de M¹·¹·¹ topologie.
+
+De universele schaal μ₀ = v/210 genereert alle hadronmassa's via
+een twee-fasen structuur:
+
+  Fase 1 — Lichte sector (m < μ₀): topologische τ-reeks
+    Massa's bepaald door de holonomie-parameter τ = 1/5 en de
+    Killing-spinor reeks op CP².
+
+  Fase 2 — Zware sector (m ≥ μ₀): KK-eigenwaarden
+    Massa's bepaald door de dimensies van de isometrie-groepen
+    en de strange-quark increment δ_s = μ₀/8.
+
+Sleutelidentiteiten:
+  m_p  = μ₀ × 4τ                    = 937.98 MeV  (0.031%)
+  m_π  = μ₀ × 3τ²/(1+τ²+τ⁴)       = 135.08 MeV  (0.075%)
+  m_Ω  = m_Δ + 3μ₀/8               = 1670.78 MeV (0.100%)
+  f_π  = (1+τ²) × Λ_QCD            = 92.67 MeV   (0.4%)
+
+Parameters:
+  v       : Higgs VEV in MeV (default: 246220.0)
+  verbose : Print de tabel (default: true)
+
+Returns:
+  Vector van NamedTuples met velden:
+    name, formula, M_FG, M_exp, error_pct, sector
+
+# Gebruik
+```julia
+spectrum = hadron_spectrum()
+spectrum = hadron_spectrum(verbose=false)  # alleen data, geen output
+```
+
+Zie: FisherGeometrics preprint v15, sectie 7.
+"""
+function hadron_spectrum(; v::Float64=246220.0, verbose::Bool=true)
+    τ   = 1/5
+    α   = 1/137.036
+    KK  = 210.0
+    μ₀  = v/KK
+
+    # Strange-quark increment
+    δ_s = μ₀/8
+
+    # Hadron definities: (naam, sector, formule, experimentele massa, FG-massa)
+    entries = [
+        (name="pion π⁰",   sector="licht", formula="μ₀×3τ²/(1+τ²+τ⁴)",
+         M_exp=134.977,  M_FG=μ₀*3τ^2/(1+τ^2+τ^4)),
+        (name="pion π±",   sector="licht", formula="mπ⁰ + α/2×μ₀",
+         M_exp=139.570,  M_FG=μ₀*3τ^2/(1+τ^2+τ^4) + α/2*μ₀),
+        (name="proton p",  sector="licht", formula="μ₀×4τ",
+         M_exp=938.272,  M_FG=μ₀*4τ),
+        (name="neutron n", sector="licht", formula="μ₀×4τ",
+         M_exp=939.565,  M_FG=μ₀*4τ),
+        (name="Lambda Λ",  sector="zwaar", formula="μ₀×4τ(1+τ)",
+         M_exp=1115.683, M_FG=μ₀*4τ*(1+τ)),
+        (name="Delta Δ",   sector="zwaar", formula="μ₀×3(1+2τ)/4",
+         M_exp=1232.000, M_FG=μ₀*3*(1+2τ)/4),
+        (name="Sigma Σ",   sector="zwaar", formula="μ₀×4τ(1+τ) + μ₀τ/3",
+         M_exp=1189.370, M_FG=μ₀*4τ*(1+τ) + μ₀*τ/3),
+        (name="Xi Ξ",      sector="zwaar", formula="mΣ + δ_s×(1−τ)",
+         M_exp=1314.860, M_FG=μ₀*4τ*(1+τ) + μ₀*τ/3 + δ_s*(1-τ)),
+        (name="Omega Ω",   sector="zwaar", formula="mΔ + 3δ_s",
+         M_exp=1672.450, M_FG=μ₀*3*(1+2τ)/4 + 3*δ_s),
+    ]
+
+    # Bereken fouten
+    results = [(; e..., error_pct=abs(e.M_FG-e.M_exp)/e.M_exp*100)
+               for e in entries]
+
+    if verbose
+        @printf("\nHADRONSPECTRUM — FisherGeometrics (μ₀ = %.2f MeV)\n", μ₀)
+        println("="^70)
+        println()
+        @printf("%-12s  %-6s  %-28s  %-8s  %-8s  %-6s\n",
+                "Deeltje", "Sector", "Formule", "FG (MeV)", "Exp (MeV)", "Fout")
+        println("─"^70)
+
+        current_sector = ""
+        for r in results
+            if r.sector != current_sector
+                current_sector = r.sector
+                label = current_sector == "licht" ?
+                    "── Lichte sector (<μ₀): topologische τ-reeks ──" :
+                    "── Zware sector (≥μ₀): KK-eigenwaarden ──"
+                println()
+                println("  $label")
+            end
+            @printf("  %-12s %-6s  %-28s  %8.2f  %8.3f  %5.3f%%\n",
+                    r.name, "", r.formula, r.M_FG, r.M_exp, r.error_pct)
+        end
+
+        println()
+        println("─"^70)
+        errors = [r.error_pct for r in results]
+        @printf("  Gemiddelde fout: %.3f%%   Maximum: %.3f%% (%s)\n",
+                sum(errors)/length(errors),
+                maximum(errors),
+                results[argmax(errors)].name)
+        println()
+        @printf("  μ₀ = v/210 = %.4f MeV\n", μ₀)
+        @printf("  τ  = 1/5   = %.4f\n", τ)
+        @printf("  δ_s = μ₀/8 = %.4f MeV  (strange-quark increment)\n", δ_s)
+        println()
+    end
+
+    return results
+end
