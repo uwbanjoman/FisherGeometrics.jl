@@ -134,13 +134,19 @@ export D2_bures_KK
 
 # Analysis.jl
 export compute_I_R, compute_I_R_exact, print_I_R_summary, compute_I_R_path, run_fase_test
-export proton_mass, pion_mass, hadron_spectrum, SF_GG
+export proton_mass, pion_mass, pion_decay_constant, hadron_spectrum, SF_GG
 
 # Christoffel.jl
 #export christoffel_symbols
 
 # RiemannTensor.jl
 export christoffel_symbols, riemann, riemann_tensor, ricci_tensor, ricci_scalar, compute_curvature, sectional_curvatures_rotate
+
+# Cosmology.jl
+export bgk_relaxation, dark_energy_fraction, universe_ground_state
+
+# Mixing.jl
+export ckm_wolfenstein, pmns_angles, cp_phase
 
 # ── Full scoreboard ───────────────────────────────────────────
 
