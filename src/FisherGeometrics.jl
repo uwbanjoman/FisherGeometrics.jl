@@ -33,6 +33,7 @@ include(joinpath(@__DIR__, "Interactions.jl"))
 include(joinpath(@__DIR__, "States.jl"))
 include(joinpath(@__DIR__, "Analysis.jl"))
 include(joinpath(@__DIR__, "RiemannTensor.jl"))
+include(joinpath(@__DIR__, "BlackHole.jl"))
 include(joinpath(@__DIR__, "Cosmology.jl"))
 include(joinpath(@__DIR__, "Mixing.jl"))
 
@@ -105,7 +106,7 @@ export maximally_mixed, is_density_matrix
 # Metrics.jl
 export FisherMetric
 export metric, metric_matrix, numerical_gradient, natural_gradient
-export check_metric_normalization
+export check_metric_normalization, spacetime_perturbation, bures_metric
 
 # MetricDerivative.jl
 export dmetric_rotate, metric_derivatives_rotate
@@ -143,6 +144,9 @@ export proton_mass, pion_mass, pion_decay_constant, hadron_spectrum, SF_GG
 
 # RiemannTensor.jl
 export christoffel_symbols, riemann, riemann_tensor, ricci_tensor, ricci_scalar, compute_curvature, sectional_curvatures_rotate
+
+# BlackHole.jl
+export hawking_temp_FG, evaporation_time, bh_entropy
 
 # Cosmology.jl
 export bgk_relaxation, dark_energy_fraction, universe_ground_state
