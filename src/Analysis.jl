@@ -277,56 +277,43 @@ function proton_mass(; v::Float64=246220.0)
 end
 
 """
-    pion_mass() -> Float64
+    pion_mass(; v::Float64=246220.0) -> Float64
 
-Pionmassa afgeleid uit de M¹·¹·¹ topologie via de Killing-spinor
-expansie op CP²:
+Neutral pion mass from the Killing-spinor series on CP².
 
-    m_π = (v/210) × dim(SU(2)_adj) × τ²/(1+τ²+τ⁴)
+    m_π = μ₀ × 3τ²/(1+τ²+τ⁴)
 
-waarbij:
-  v/210   = 1172.5 MeV  (Higgs VEV / KK-normalisatiefactor)
-  3       = dim(SU(2)_adj) = aantal W-bosonen
-  τ²/(1+τ²+τ⁴) = tweede term van de Killing-spinor reeks op CP²
+The factor 3 = dim(SU(2)_adj) counts the W-boson degrees of freedom.
+The factor τ²/(1+τ²+τ⁴) is the second term of the Killing-spinor
+series on CP² — the geometric series correction that encodes the
+coupling of the Goldstone mode (pion) to the second Killing-spinor
+direction on CP².
 
-De factor τ²/(1+τ²+τ⁴) is de geometrische reeks-correctie die de
-koppeling van de Goldstone-modus (pion) aan de tweede Killing-spinor
-richting op CP² beschrijft. Het pion is het Goldstone-boson van de
-chiraal-symmetriebreking SU(2)_L × SU(2)_R → SU(2)_V, geometrisch
-gerealiseerd als de tweede holonomie van M¹·¹·¹.
+The pion is the Goldstone boson of chiral symmetry breaking
+SU(2)_L × SU(2)_R → SU(2)_V, geometrically realized as the
+second holonomy of M¹·¹·¹.
 
-Vergelijk met de protonmassa:
-  m_p = (v/210) × 8 × τ/2         [eerste holonomie, SU(3)]
-  m_π = (v/210) × 3 × τ²/(1+τ²+τ⁴) [tweede holonomie, SU(2)]
+Compare with the proton:
+  m_p = μ₀ × 8 × τ/2    [first holonomy,  SU(3), 0.031%]
+  m_π = μ₀ × 3 × τ²/Σ   [second holonomy, SU(2), 0.075%]
 
-Resultaat: 135.08 MeV (gemeten: 134.977 MeV, verschil 0.075%)
+# Arguments
+- `v`: Higgs VEV in MeV (default: 246220.0)
 
-# Gebruik
+# Returns
+Neutral pion mass in MeV
+
+# Examples
 ```julia
-m_π = pion_mass()    # → 135.08 MeV
-m_p = proton_mass()  # → 937.98 MeV
-@printf("m_π/m_p = %.4f  (gemeten: %.4f)\\n",
-        m_π/m_p, 134.977/938.272)
+pion_mass()              # → 135.08 MeV  (measured: 134.977 MeV, 0.075%)
 ```
 
-Zie: FisherGeometrics Document XXX, sectie 8.
+See: FisherGeometrics preprint v15, section 7.
 """
 function pion_mass(; v::Float64=246220.0)
-    KK_norm  = 210.0
-    dim_su2  = 3.0        # dim(SU(2)_adj) = aantal W-bosonen
-    τ        = 1/5
-
-    # Killing-spinor reeks factor
-    ks_factor = τ^2 / (1 + τ^2 + τ^4)
-
-    m_π = (v / KK_norm) * dim_su2 * ks_factor
-
-    target = 134.977  # MeV gemeten (neutrale pion)
-    @printf("m_π (FG)  = %.4f MeV\n", m_π)
-    @printf("Gemeten   = %.4f MeV\n", target)
-    @printf("Verschil  = %.4f MeV (%.4f%%)\n",
-            abs(m_π-target), abs(m_π-target)/target*100)
-    return m_π
+    τ  = 1/5
+    μ₀ = v/210.0
+    return μ₀ * 3τ^2 / (1 + τ^2 + τ^4)
 end
 
 """
