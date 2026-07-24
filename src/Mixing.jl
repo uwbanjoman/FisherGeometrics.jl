@@ -189,3 +189,82 @@ function cp_phase()
     φ = (1+sqrt(5))/2
     return rad2deg(atan(φ^2))
 end
+
+"""
+    neutrino_masses(; verbose::Bool=true) -> NamedTuple
+
+Neutrino masses from the FisherGeometrics Killing-spinor hierarchy.
+
+The lightest neutrino mass m₁ is the solar mass splitting suppressed
+by the second holonomy τ² of M¹·¹·¹:
+
+    m₁ = √(Δm²₂₁) × τ²
+
+The heavier masses follow from the measured mass-squared differences
+(normal hierarchy):
+
+    m₂ = √(m₁² + Δm²₂₁)
+    m₃ = √(m₁² + Δm²₃₁)
+
+The sum Σmν = 59.14 meV is consistent with the early FG prediction
+of 58.7 meV (= √Δm²₂₁ + √Δm²₃₁, the m₁→0 limit).
+
+Falsifiable prediction:
+  Σmν ≈ 59 meV  — Euclid (2025–2030) measures to ~20 meV precision
+  Σmν < 30 meV  → FisherGeometrics falsified
+  Σmν ≈ 59 meV  → FisherGeometrics confirmed
+
+Input mass-squared differences (PDG 2024):
+  Δm²₂₁ = 7.42 × 10⁻⁵ eV²  (solar)
+  Δm²₃₁ = 2.517 × 10⁻³ eV²  (atmospheric)
+
+# Arguments
+- `verbose`: print the mass table (default: true)
+
+# Returns
+NamedTuple with fields: m₁, m₂, m₃, Σmν (all in meV)
+
+# Examples
+```julia
+ν = neutrino_masses()
+ν.m₁     # → 0.3446 meV
+ν.m₃     # → 50.171 meV
+ν.Σmν    # → 59.14 meV  (Euclid prediction)
+```
+
+See: FisherGeometrics preprint v15, section 9.
+"""
+function neutrino_masses(; verbose::Bool=true)
+    τ = 1/5
+
+    # Measured mass-squared differences (PDG 2024, normal hierarchy)
+    Δm²_21 = 7.42e-5    # eV²
+    Δm²_31 = 2.517e-3   # eV²
+
+    # Lightest neutrino: solar splitting suppressed by τ²
+    m₁ = sqrt(Δm²_21) * τ^2 * 1e3   # meV
+    m₂ = sqrt(m₁^2/1e6 + Δm²_21) * 1e3
+    m₃ = sqrt(m₁^2/1e6 + Δm²_31) * 1e3
+    Σmν = m₁ + m₂ + m₃
+
+    if verbose
+        println("\nNEUTRINO MASSES — FisherGeometrics")
+        println("="^50)
+        @printf("  m₁ = √Δm²₂₁ × τ² = %.4f meV\n", m₁)
+        @printf("  m₂ = √(m₁²+Δm²₂₁)  = %.4f meV\n", m₂)
+        @printf("  m₃ = √(m₁²+Δm²₃₁)  = %.4f meV\n", m₃)
+        println("  " * "─"^36)
+        @printf("  Σmν               = %.4f meV\n", Σmν)
+        println()
+        @printf("  Early FG limit (m₁→0): %.4f meV\n",
+                (sqrt(Δm²_21)+sqrt(Δm²_31))*1e3)
+        println()
+        println("  Falsifiable prediction:")
+        @printf("    Euclid (2025–2030) precision: ~20 meV\n")
+        @printf("    Σmν < 30 meV → FG falsified\n")
+        @printf("    Σmν ≈ 59 meV → FG confirmed\n")
+        println()
+    end
+
+    return (m₁=m₁, m₂=m₂, m₃=m₃, Σmν=Σmν)
+end
