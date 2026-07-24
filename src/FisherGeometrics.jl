@@ -37,6 +37,7 @@ include(joinpath(@__DIR__, "BlackHole.jl"))
 include(joinpath(@__DIR__, "Cosmology.jl"))
 include(joinpath(@__DIR__, "Mixing.jl"))
 include(joinpath(@__DIR__, "Predictions.jl"))
+include(joinpath(@__DIR__, "Hadrons.jl"))
 
 
 # ── Exports ───────────────────────────────────────────────────
