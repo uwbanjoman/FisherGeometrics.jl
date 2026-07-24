@@ -153,7 +153,7 @@ export hawking_temp_FG, evaporation_time, bh_entropy
 export bgk_relaxation, dark_energy_fraction, universe_ground_state
 
 # Mixing.jl
-export ckm_wolfenstein, pmns_angles, cp_phase
+export ckm_wolfenstein, pmns_angles, cp_phase, neutrino_masses
 
 # Hadrons.jl
 export hadron_spectrum, proton_mass, pion_mass, pion_decay_constant, oneill_correction, bh_partition_sum
